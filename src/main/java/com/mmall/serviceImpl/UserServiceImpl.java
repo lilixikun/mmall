@@ -85,4 +85,82 @@ public class UserServiceImpl implements UserService {
         }
         return ServerResponse.createBySuccessMessage("校验成功");
     }
+
+    @Override
+    public ServerResponse<String> foegetByQuestion(String username) {
+
+        ServerResponse validResponse = checkVaild(username, Const.USERNAME);
+        if (validResponse.isSuccess()){
+            //用户不存在
+            return ServerResponse.createByErrorMessage("用户不存在");
+        }
+        String question=userMapper.selectQuestionByUserName(username);
+        if (!question.isEmpty()){
+            return ServerResponse.createBySuccessMessage(question);
+        }
+        return ServerResponse.createByErrorMessage("找回密码为空");
+    }
+
+    @Override
+    public ServerResponse<String> forgetCheckAnswer(String username, String password, String answer) {
+        String Md5Password=MD5Util.MD5EncodeUtf8(password);
+        int resuleCount =userMapper.forgetCheckAnswer(username,Md5Password,answer);
+        if (resuleCount>0){
+            //返回token 给前端
+            return ServerResponse.createBySuccessMessage("忘记密码验证成功");
+        }
+        return ServerResponse.createByErrorMessage("忘记密码验证失败");
+    }
+
+    @Override
+    public ServerResponse<String> forgetResetPassword(String username, String passwordNew, String forgetToken) {
+        if (forgetToken.isEmpty()){
+            return ServerResponse.createByErrorMessage("获取token 失败");
+        }
+
+        ServerResponse validResponse = checkVaild(username, Const.USERNAME);
+        if (validResponse.isSuccess()){
+            //用户不存在
+            return ServerResponse.createByErrorMessage("用户不存在");
+        }
+
+        return null;
+    }
+
+    @Override
+    public ServerResponse<String> resetPasswor(String password, String passwordNew,User user) {
+        //防止横向越权，一定要指定用户下的password，如果用户密码相同就会误改
+        int resuleCount=userMapper.checkPassword(password,user.getId());
+        if (resuleCount <1){
+            return ServerResponse.createByErrorMessage("未找到该用户信息");
+        }
+
+        user.setPassword(MD5Util.MD5EncodeUtf8(passwordNew));
+        int updateCount=userMapper.updateByPrimaryKeySelective(user);
+        if (updateCount>0){
+            return ServerResponse.createBySuccessMessage("密码已重置");
+        }
+
+        return ServerResponse.createByErrorMessage("重置密码失败");
+    }
+
+    @Override
+    public ServerResponse<String> updateInfo(User user) {
+        //校验email 是否存在,并且如果email 存在的话不能是当前用户的
+        int resultCount=userMapper.checkEmailByUserId(user.getEmail(),user.getId());
+        if (resultCount>0){
+            return ServerResponse.createByErrorMessage("email已存在，请更换email");
+        }
+
+        User newUser=new User();
+        newUser.setAnswer(user.getAnswer());
+        newUser.setEmail(user.getEmail());
+        newUser.setPhone(user.getPhone());
+        newUser.setQuestion(user.getQuestion());
+        int updateCount=userMapper.updateByPrimaryKeySelective(newUser);
+        if (updateCount>0){
+            return ServerResponse.createBySuccessMessage("更新信息c成功");
+        }
+        return ServerResponse.createByErrorMessage("更新信息失败");
+    }
 }

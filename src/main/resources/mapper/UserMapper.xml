@@ -163,4 +163,26 @@
     where username=#{username} and password=#{password}
   </select>
 
+  <select id="selectQuestionByUserName" resultType="string" parameterType="java.lang.String">
+    select  question
+    from mmall_user
+    where username=#{username}
+  </select>
+
+  <select id="forgetCheckAnswer" resultType="int" parameterType="map">
+    select  COUNT (1)
+    from mmall_user
+    where username=#{username} and password=#{password} and answer=#{answer}
+  </select>
+
+  <select id="checkPassword" resultType="int" parameterType="map">
+    select  COUNT (1)
+    from mmall_user
+    where id=#{id}  and password=#{password}
+  </select>
+
+  <select id="checkEmailByUserId" resultType="int" parameterType="map">
+    select COUNT (1) from mmall_user where email={email} and id!=#{id}
+  </select>
+
 </mapper>
