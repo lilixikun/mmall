@@ -2,11 +2,12 @@ package com.mmall.dto;
 
 import com.mmall.entity.Category;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CategoryDTO {
+public class CategoryDTO implements Serializable {
 
     private Integer id;
 

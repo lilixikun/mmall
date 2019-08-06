@@ -5,7 +5,9 @@ public enum ResponseCode {
     ERROR(1,"ERROR"),
     NEED_LOGIN(10,"NEED_LOGIN"),
     ILLEGAL_ARGUMENT(2,"ILLEGAL_ARGUMENT"),
-    NO_LOGIN(3,"用户未登陆");
+    NO_LOGIN(3,"用户未登陆"),
+
+    FORM_ERR(-100,"参数错误");
 
     private final int code;
     private final String desc;

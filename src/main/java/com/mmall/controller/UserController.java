@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/user/")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -26,8 +26,7 @@ public class UserController {
      * @param session
      * @return
      */
-    @PostMapping("login")
-    @ResponseBody
+    @PostMapping("/login")
     public ServerResponse login(String username,String password, HttpSession session) {
         ServerResponse<User> serverResponse = userService.login(username, password);
         //是否登录成功
@@ -37,20 +36,18 @@ public class UserController {
         return serverResponse;
     }
 
-    @GetMapping("logout")
+    @GetMapping("/logout")
     public ServerResponse<String> logout(HttpSession session) {
         session.removeAttribute(Const.CURRENT_USER);
         return ServerResponse.createBySuccessMessage("登出成功");
     }
 
-    @PostMapping("regist")
-    @ResponseBody
+    @PostMapping("/regist")
     public ServerResponse<String> regist(User user) {
         return userService.register(user);
     }
 
-    @PostMapping("checkVaild")
-    @ResponseBody
+    @PostMapping("/checkVaild")
     public ServerResponse<String> checkVaild(String str, String type) {
         return userService.checkVaild(str, type);
     }
@@ -60,7 +57,7 @@ public class UserController {
      * @param session
      * @return
      */
-    @GetMapping("getUserInfo")
+    @GetMapping("/getUserInfo")
     public ServerResponse<User> getUserInfo(HttpSession session){
         User user=(User) session.getAttribute(Const.CURRENT_USER);
         if (user!=null){
@@ -69,25 +66,23 @@ public class UserController {
         return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登陆，需要强制登陆");
     }
 
-    @GetMapping("foegetByQuestion")
+    @GetMapping("/foegetByQuestion")
     public ServerResponse<String> foegetByQuestion(@RequestParam("username") String username){
         return userService.foegetByQuestion(username);
     }
 
-    @PostMapping("forgetCheckAnswer")
+    @PostMapping("/forgetCheckAnswer")
     @ResponseBody
     public ServerResponse<String> forgetCheckAnswer(String username,String password,String answer){
         return userService.forgetCheckAnswer(username,password,answer);
     }
 
-    @PostMapping("forgetResetPassword")
-    @ResponseBody
+    @PostMapping("/forgetResetPassword")
     public ServerResponse<String> forgetResetPassword(String username,String passwordNew,String forgetToken){
         return userService.forgetResetPassword(username,passwordNew,forgetToken);
     }
 
-    @PostMapping("resetPassword")
-    @ResponseBody
+    @PostMapping("/resetPassword")
     public ServerResponse<String> resetPassword(String password,String passwordNew,HttpSession session){
         User user=(User) session.getAttribute(Const.CURRENT_USER);
         if (user==null){
@@ -96,8 +91,7 @@ public class UserController {
         return userService.resetPasswor(password,passwordNew,user);
     }
 
-    @PostMapping("updateInfo")
-    @ResponseBody
+    @PostMapping("/updateInfo")
     public ServerResponse<String> updateInfo(User user,HttpSession session){
         User user1=(User) session.getAttribute(Const.CURRENT_USER);
         if (user1==null){
