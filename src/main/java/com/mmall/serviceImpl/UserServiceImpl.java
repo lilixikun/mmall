@@ -163,4 +163,12 @@ public class UserServiceImpl implements UserService {
         }
         return ServerResponse.createByErrorMessage("更新信息失败");
     }
+
+    @Override
+    public boolean checkAdminRole(User user) {
+        if (user.getRole().equals(Const.Role.ROLE_ADMIN)){
+            return true;
+        }
+        return false;
+    }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mmall.mapper.CategoryMapper" >
-  <resultMap id="BaseResultMap" type="com.mmall.entity.Category" >
+  <resultMap id="BaseResultMap" type="com.mmall.dto.CategoryDTO" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="parent_id" property="parentId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -9,6 +9,7 @@
     <result column="sort_order" property="sortOrder" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <collection property="children" column="id" select="selectCategoryChildByParentId"/>
   </resultMap>
   <sql id="Base_Column_List" >
     id, parent_id, name, status, sort_order, create_time, update_time
@@ -114,4 +115,13 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectCategoryChildByParentId" resultMap="BaseResultMap" parameterType="int" >
+    select
+    <include refid="Base_Column_List" />
+    from mmall_category
+    where parent_id=#{id}
+  </select>
+
+
 </mapper>

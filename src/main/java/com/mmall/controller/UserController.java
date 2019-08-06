@@ -21,14 +21,15 @@ public class UserController {
     /**
      * 登录
      *
-     * @param userName
+     * @param username
      * @param password
      * @param session
      * @return
      */
     @PostMapping("login")
-    public ServerResponse login(String userName,String password, HttpSession session) {
-        ServerResponse<User> serverResponse = userService.login(userName, password);
+    @ResponseBody
+    public ServerResponse login(String username,String password, HttpSession session) {
+        ServerResponse<User> serverResponse = userService.login(username, password);
         //是否登录成功
         if (serverResponse.isSuccess()) {
             session.setAttribute(Const.CURRENT_USER, serverResponse.getData());
@@ -43,11 +44,13 @@ public class UserController {
     }
 
     @PostMapping("regist")
+    @ResponseBody
     public ServerResponse<String> regist(User user) {
         return userService.register(user);
     }
 
     @PostMapping("checkVaild")
+    @ResponseBody
     public ServerResponse<String> checkVaild(String str, String type) {
         return userService.checkVaild(str, type);
     }
@@ -67,11 +70,12 @@ public class UserController {
     }
 
     @GetMapping("foegetByQuestion")
-    public ServerResponse<String> foegetByQuestion(@Param("username") String username){
+    public ServerResponse<String> foegetByQuestion(@RequestParam("username") String username){
         return userService.foegetByQuestion(username);
     }
 
     @PostMapping("forgetCheckAnswer")
+    @ResponseBody
     public ServerResponse<String> forgetCheckAnswer(String username,String password,String answer){
         return userService.forgetCheckAnswer(username,password,answer);
     }

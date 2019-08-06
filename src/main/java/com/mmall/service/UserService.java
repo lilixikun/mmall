@@ -67,4 +67,11 @@ public interface UserService {
      * @return
      */
     ServerResponse<String> updateInfo(User user);
+
+    /**
+     * 判断是不是管理员
+     * @param user
+     * @return
+     */
+    boolean checkAdminRole(User user);
 }

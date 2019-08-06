@@ -1,6 +1,9 @@
 package com.mmall.mapper;
 
+import com.mmall.dto.CategoryDTO;
 import com.mmall.entity.Category;
+
+import java.util.List;
 
 public interface CategoryMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +17,6 @@ public interface CategoryMapper {
     int updateByPrimaryKeySelective(Category record);
 
     int updateByPrimaryKey(Category record);
+
+    List<CategoryDTO> selectCategoryChildByParentId(Integer parentId);
 }

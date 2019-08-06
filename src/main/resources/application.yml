@@ -13,9 +13,13 @@ spring:
     encoding:
       charset: UTF-8
       enabled: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
 logging:
   level:
-    com.example.mybatis.mapper: trace
+    com.mmall.mapper: trace
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 pagehelper:

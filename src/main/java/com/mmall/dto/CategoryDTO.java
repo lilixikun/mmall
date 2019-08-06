@@ -1,9 +1,13 @@
-package com.mmall.entity;
+package com.mmall.dto;
 
+import com.mmall.entity.Category;
+
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Objects;
+import java.util.List;
 
-public class Category {
+public class CategoryDTO {
+
     private Integer id;
 
     private Integer parentId;
@@ -17,6 +21,8 @@ public class Category {
     private Date createTime;
 
     private Date updateTime;
+
+    private List<Category> children = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -74,16 +80,12 @@ public class Category {
         this.updateTime = updateTime;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Category category = (Category) o;
-        return id.equals(category.id);
+    public List<Category> getChildren() {
+        return children;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setChildren(List<Category> children) {
+        this.children = children;
     }
 }
+
