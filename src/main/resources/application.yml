@@ -28,6 +28,14 @@ pagehelper:
   support-methods-arguments: true
   params: count==countSql
   page-size-zero: true
+
+ftp:
+  address: 127.0.0.1
+  port: 21
+  username: xikun
+  xikun: xikun
+  bastPath: "F:\\upload"
+  imageBaseUrl: ftp://192.168.205.61/img/
 wechat:
   wxAppId: wxa830230a1a818a46
   wxAppSecret: 6d2141b57fc59362f9f631f89d0243c7

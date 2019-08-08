@@ -71,6 +71,12 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <!--  ftp连接   -->
+         <dependency>
+              <groupId>commons-net</groupId>
+               <artifactId>commons-net</artifactId>
+               <version>3.6</version>
+         </dependency>
     </dependencies>
 
     <build>

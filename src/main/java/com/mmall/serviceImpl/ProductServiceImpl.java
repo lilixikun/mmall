@@ -9,11 +9,14 @@ import com.mmall.entity.Product;
 import com.mmall.exceptionHandle.MmallException;
 import com.mmall.mapper.ProductMapper;
 import com.mmall.service.ProductService;
+import com.mmall.utils.DateTimeUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -60,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ServerResponse<Product> selectById(Integer productId) throws MmallException{
+    public ServerResponse<ProductDTO> managerProductDetail(Integer productId) throws MmallException{
         if (productId==null){
             throw new MmallException(ResponseCode.FORM_ERR);
         }
@@ -68,12 +71,24 @@ public class ProductServiceImpl implements ProductService {
         if (product==null){
             return ServerResponse.createByErrorMessage("未找到相关信息");
         }
-        return ServerResponse.createBySuccess(product);
+        ProductDTO productDTO=new ProductDTO();
+        BeanUtils.copyProperties(product,productDTO);
+        productDTO.setCreateTime(DateTimeUtil.formatDatetime(product.getCreateTime(),"yyyy-MM-dd HH:mm"));
+        productDTO.setUpdateTime(DateTimeUtil.formatDatetime(product.getUpdateTime(),"yyyy-MM-dd HH:mm"));
+        return ServerResponse.createBySuccess(productDTO);
     }
 
     @Override
-    public ServerResponse getList(Integer pageNum, Integer pageSize) {
-        List<Product> productList=productMapper.selectProducts();
+    public ServerResponse getList(Integer pageNum, Integer pageSize,String productName,Integer productId) {
+        List<Product> productList=productMapper.selectProducts(productName,productId);
+        List<ProductDTO> productDTOList=new ArrayList<>();
+        for (Product product:productList){
+            ProductDTO productDTO=new ProductDTO();
+            BeanUtils.copyProperties(product,productDTO);
+            productDTO.setCreateTime(DateTimeUtil.formatDatetime(product.getCreateTime(),"yyyy-MM-dd HH:mm"));
+            productDTO.setUpdateTime(DateTimeUtil.formatDatetime(product.getUpdateTime(),"yyyy-MM-dd HH:mm"));
+            productDTOList.add(productDTO);
+        }
         PageHelper.startPage(pageNum, pageSize);
         PageInfo<Product> productPageInfo=new PageInfo<>(productList,pageSize);
         return ServerResponse.createBySuccess(productPageInfo);

@@ -35,13 +35,15 @@ public class ProductManagerController {
 
     @GetMapping("/detail/{productId}")
     public ServerResponse getDetailById(@PathVariable("productId") Integer productId){
-        return productService.selectById(productId);
+        return productService.managerProductDetail(productId);
     }
 
     @GetMapping("/list")
     public ServerResponse getList(@RequestParam(value = "pageNum",defaultValue = "1",required = false)Integer pageNum,
-                                                 @RequestParam(value = "pageSize",defaultValue = "10",required = false)Integer pageSize){
+                                                 @RequestParam(value = "pageSize",defaultValue = "10",required = false)Integer pageSize,
+                                  @RequestParam("productName") String productName,
+                                  @RequestParam(value = "productId",required = false) Integer productId){
 
-        return productService.getList(pageNum,pageSize);
+        return productService.getList(pageNum,pageSize,productName,productId);
     }
 }

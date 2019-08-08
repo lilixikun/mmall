@@ -38,4 +38,7 @@ public class ProductDTO {
 
     private Integer status;
 
+    private String createTime;
+
+    private String updateTime;
 }

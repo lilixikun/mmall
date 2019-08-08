@@ -29,7 +29,7 @@ public interface ProductService {
      * @param productId
      * @return
      */
-    ServerResponse<Product> selectById(Integer productId);
+    ServerResponse<ProductDTO> managerProductDetail(Integer productId);
 
     /**
      * 分页查询
@@ -37,5 +37,5 @@ public interface ProductService {
      * @param pageSize
      * @return
      */
-    ServerResponse getList(Integer pageNum,Integer pageSize);
+    ServerResponse getList(Integer pageNum,Integer pageSize,String productName,Integer productId);
 }
