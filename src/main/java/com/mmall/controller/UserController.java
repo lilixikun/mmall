@@ -4,6 +4,7 @@ import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.entity.User;
+import com.mmall.exceptionHandle.MmallException;
 import com.mmall.service.UserService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,10 +93,10 @@ public class UserController {
     }
 
     @PostMapping("/updateInfo")
-    public ServerResponse<String> updateInfo(User user,HttpSession session){
+    public ServerResponse<String> updateInfo(User user,HttpSession session) throws MmallException {
         User user1=(User) session.getAttribute(Const.CURRENT_USER);
         if (user1==null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NO_LOGIN.getCode(),ResponseCode.NO_LOGIN.getDesc());
+           throw new MmallException(ResponseCode.NO_LOGIN);
         }
         return userService.updateInfo(user);
     }
