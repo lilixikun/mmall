@@ -3,14 +3,19 @@ package com.mmall.controller;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
+import com.mmall.dto.UserDTO;
 import com.mmall.entity.User;
 import com.mmall.exceptionHandle.MmallException;
 import com.mmall.service.UserService;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
@@ -21,18 +26,17 @@ public class UserController {
 
     /**
      * 登录
-     *
-     * @param username
-     * @param password
-     * @param session
+     * @param user
      * @return
      */
     @PostMapping("/login")
-    public ServerResponse login(String username,String password, HttpSession session) {
-        ServerResponse<User> serverResponse = userService.login(username, password);
+    public ServerResponse login(@RequestBody User user) {
+        ServerResponse<User> serverResponse = userService.login(user.getUserName(), user.getPassword());
         //是否登录成功
         if (serverResponse.isSuccess()) {
-            session.setAttribute(Const.CURRENT_USER, serverResponse.getData());
+            String token= UUID.randomUUID().toString();
+            //存入缓存redis
+            return ServerResponse.createBySuccess(token);
         }
         return serverResponse;
     }
@@ -44,12 +48,18 @@ public class UserController {
     }
 
     @PostMapping("/regist")
-    public ServerResponse<String> regist(User user) {
+    public ServerResponse<String> regist(@RequestBody @Valid UserDTO userDTO,
+                                         BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.FORM_ERR.getCode(), bindingResult.getFieldError().getDefaultMessage());
+        }
+        User user=new User();
+        BeanUtils.copyProperties(userDTO,user);
         return userService.register(user);
     }
 
-    @PostMapping("/checkVaild")
-    public ServerResponse<String> checkVaild(String str, String type) {
+    @GetMapping("/checkVaild")
+    public ServerResponse<String> checkVaild(@RequestParam("str") String str,@RequestParam("type") String type) {
         return userService.checkVaild(str, type);
     }
 
@@ -68,19 +78,18 @@ public class UserController {
     }
 
     @GetMapping("/foegetByQuestion")
-    public ServerResponse<String> foegetByQuestion(@RequestParam("username") String username){
-        return userService.foegetByQuestion(username);
+    public ServerResponse<String> foegetByQuestion(@RequestParam("userName") String userName){
+        return userService.foegetByQuestion(userName);
     }
 
     @PostMapping("/forgetCheckAnswer")
-    @ResponseBody
-    public ServerResponse<String> forgetCheckAnswer(String username,String password,String answer){
-        return userService.forgetCheckAnswer(username,password,answer);
+    public ServerResponse<String> forgetCheckAnswer(@RequestBody UserDTO userDTO){
+        return userService.forgetCheckAnswer(userDTO.getUserName(),userDTO.getQuestion(),userDTO.getAnswer());
     }
 
     @PostMapping("/forgetResetPassword")
-    public ServerResponse<String> forgetResetPassword(String username,String passwordNew,String forgetToken){
-        return userService.forgetResetPassword(username,passwordNew,forgetToken);
+    public ServerResponse<String> forgetResetPassword(@RequestBody UserDTO userDTO){
+        return userService.forgetResetPassword(userDTO.getUserName(),userDTO.getPassword());
     }
 
     @PostMapping("/resetPassword")

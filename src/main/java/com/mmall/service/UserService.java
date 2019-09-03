@@ -38,20 +38,19 @@ public interface UserService {
     /**
      * 验证密码问题是否正确
      * @param username
-     * @param password
+     * @param question
      * @param answer
      * @return
      */
-    ServerResponse<String> forgetCheckAnswer(String username,String password,String answer);
+    ServerResponse<String> forgetCheckAnswer(String username,String question,String answer);
 
     /**
      * 忘记密码重置密码
      * @param username
      * @param passwordNew
-     * @param forgetToken
      * @return
      */
-    ServerResponse<String> forgetResetPassword(String username,String passwordNew,String forgetToken);
+    ServerResponse<String> forgetResetPassword(String username,String passwordNew);
 
     /**
      * 登录状态下重置密码

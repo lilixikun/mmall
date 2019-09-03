@@ -1,144 +1,136 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mmall.mapper.UserMapper" >
-  <resultMap id="BaseResultMap" type="com.mmall.entity.User" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="username" property="username" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="email" property="email" jdbcType="VARCHAR" />
-    <result column="phone" property="phone" jdbcType="VARCHAR" />
-    <result column="question" property="question" jdbcType="VARCHAR" />
-    <result column="answer" property="answer" jdbcType="VARCHAR" />
-    <result column="role" property="role" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, username, password, email, phone, question, answer, role, create_time, update_time
+<mapper namespace="com.mmall.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.mmall.entity.User">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="question" property="question" jdbcType="VARCHAR"/>
+        <result column="answer" property="answer" jdbcType="VARCHAR"/>
+        <result column="role" property="role" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, user_name, password, email, phone, question, answer, role, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from mmall_user
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.mmall.entity.User" >
-    insert into mmall_user (id, username, password, 
+    <insert id="insert" parameterType="com.mmall.entity.User">
+    insert into mmall_user (id, user_name, password,
       email, phone, question, 
       answer, role, create_time, 
       update_time)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, 
       #{answer,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.mmall.entity.User" >
-    insert into mmall_user
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="username != null" >
-        username,
-      </if>
-      <if test="password != null" >
-        password,
-      </if>
-      <if test="email != null" >
-        email,
-      </if>
-      <if test="phone != null" >
-        phone,
-      </if>
-      <if test="question != null" >
-        question,
-      </if>
-      <if test="answer != null" >
-        answer,
-      </if>
-      <if test="role != null" >
-        role,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="username != null" >
-        #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null" >
-        #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null" >
-        #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="question != null" >
-        #{question,jdbcType=VARCHAR},
-      </if>
-      <if test="answer != null" >
-        #{answer,jdbcType=VARCHAR},
-      </if>
-      <if test="role != null" >
-        #{role,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.mmall.entity.User" >
+    <insert id="insertSelective" parameterType="com.mmall.entity.User">
+        insert into mmall_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="question != null">
+                question,
+            </if>
+            <if test="answer != null">
+                answer,
+            </if>
+            <if test="role != null">
+                role,
+            </if>
+                create_time,
+                update_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="question != null">
+                #{question,jdbcType=VARCHAR},
+            </if>
+            <if test="answer != null">
+                #{answer,jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                #{role,jdbcType=INTEGER},
+            </if>
+            now(),
+            now(),
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.mmall.entity.User">
+        update mmall_user
+        <set>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="question != null">
+                question = #{question,jdbcType=VARCHAR},
+            </if>
+            <if test="answer != null">
+                answer = #{answer,jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                role = #{role,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.mmall.entity.User">
     update mmall_user
-    <set >
-      <if test="username != null" >
-        username = #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null" >
-        email = #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null" >
-        phone = #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="question != null" >
-        question = #{question,jdbcType=VARCHAR},
-      </if>
-      <if test="answer != null" >
-        answer = #{answer,jdbcType=VARCHAR},
-      </if>
-      <if test="role != null" >
-        role = #{role,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.mmall.entity.User" >
-    update mmall_user
-    set username = #{username,jdbcType=VARCHAR},
+    set user_name = #{userName,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
@@ -149,39 +141,46 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="checkUsername" resultType="int" parameterType="java.lang.String">
-  select COUNT(1)  from mmall_user where username=#{username}
+
+<update id="updatePasswordByUsername" parameterType="com.mmall.entity.User">
+    update mmall_user set password=#{password} where user_name=#{userName}
+</update>
+
+
+    <select id="checkUsername" resultType="int" parameterType="java.lang.String">
+  select COUNT(1)  from mmall_user where user_name=#{username}
   </select>
 
-  <select id="checkEmail" resultType="int" parameterType="java.lang.String">
-    select COUNT (1) from mmall_user where email=#{email}
+    <select id="checkEmail" resultType="int" parameterType="java.lang.String">
+    select COUNT(1) from mmall_user where email=#{email}
   </select>
 
-  <select id="selectLogin" resultMap="BaseResultMap" parameterType="map">
-    select  <include refid="Base_Column_List" />
-    from mmall_user
-    where username=#{username} and password=#{password}
-  </select>
+    <select id="selectLogin" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_user
+        where user_name=#{userName} and password=#{password}
+    </select>
 
-  <select id="selectQuestionByUserName" resultType="string" parameterType="java.lang.String">
+    <select id="selectQuestionByUserName" resultType="string" parameterType="java.lang.String">
     select  question
     from mmall_user
-    where username=#{username}
+    where user_name=#{userName}
   </select>
 
-  <select id="forgetCheckAnswer" resultType="int" parameterType="map">
-    select  COUNT (1)
+    <select id="forgetCheckAnswer" resultType="int" parameterType="map">
+    select COUNT(1)
     from mmall_user
-    where username=#{username} and password=#{password} and answer=#{answer}
+    where user_name=#{userName} and question=#{question} and answer=#{answer}
   </select>
 
-  <select id="checkPassword" resultType="int" parameterType="map">
+    <select id="checkPassword" resultType="int" parameterType="map">
     select  COUNT (1)
     from mmall_user
     where id=#{id}  and password=#{password}
   </select>
 
-  <select id="checkEmailByUserId" resultType="int" parameterType="map">
+    <select id="checkEmailByUserId" resultType="int" parameterType="map">
     select COUNT (1) from mmall_user where email={email} and id!=#{id}
   </select>
 
