@@ -38,6 +38,12 @@ public interface CategoryService {
     ServerResponse<Category> getCategory(int categoryId);
 
     /**
+     * 查询所有的商品分类
+     * @return
+     */
+    ServerResponse getAllCategory();
+
+    /**
      * 递归查询所有categoryId 下的
      * @param categoryId
      * @return

@@ -20,6 +20,12 @@
     from mmall_category
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectAllCategory" resultType="map">
+    select id ,`name`
+    from mmall_category
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from mmall_category
     where id = #{id,jdbcType=INTEGER}

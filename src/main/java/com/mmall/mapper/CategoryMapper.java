@@ -14,6 +14,8 @@ public interface CategoryMapper {
 
     Category selectByPrimaryKey(Integer id);
 
+    List<Category> selectAllCategory();
+
     int updateByPrimaryKeySelective(Category record);
 
     int updateByPrimaryKey(Category record);

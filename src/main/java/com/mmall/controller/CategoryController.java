@@ -76,6 +76,11 @@ public class CategoryController {
         return categoryService.getCategory(categoryId);
     }
 
+    @GetMapping("/allCategory")
+    public ServerResponse<Category> getAllCategory(){
+        return categoryService.getAllCategory();
+    }
+
     @GetMapping("/getDeepCategory")
     public ServerResponse getDeepCategory(@RequestParam(value = "categoryId",defaultValue = "0",required = false) int categoryId) {
         return categoryService.getDeepCategory(categoryId);

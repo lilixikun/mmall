@@ -63,6 +63,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public ServerResponse getAllCategory() {
+        List<Category> categoryList=mapper.selectAllCategory();
+        return ServerResponse.createBySuccess(categoryList);
+    }
+
+    @Override
     //@Cacheable( cacheNames = "allCategorys",key = "allCategorys")
     public ServerResponse getDeepCategory(int categoryId) {
         List<CategoryDTO> categoryList = mapper.selectCategoryChildByParentId(categoryId);
