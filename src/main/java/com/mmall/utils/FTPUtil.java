@@ -124,15 +124,13 @@ public class FTPUtil {
         if (connectServer(this.ip, this.port, this.user, this.pwd)) {
             try {
                 ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
-                //ftpClient.makeDirectory("img");
                 ftpClient.changeWorkingDirectory(FTP_BASEPATH);
+                log.info("fileName={}",fileName);
                 boolean success = ftpClient.deleteFile(fileName);
                 if (success == false) {
                     uploaded = false;
                 }
                 log.info("删除结果={}", success);
-                log.info("删除成功");
-
             } catch (IOException e) {
                 uploaded = false;
                 log.info("删除文件失败");

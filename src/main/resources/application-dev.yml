@@ -1,0 +1,46 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost/mmall?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+#logging:
+#  level:
+#    com.mmall.mapper: trace
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count==countSql
+  page-size-zero: true
+
+ftp:
+  address: 127.0.0.1
+  port: 21
+  username: xikun
+  xikun: xikun
+  uploadFile: "F:\\upload"
+  imageBaseUrl: ftp://127.0.0.1/img/
+wechat:
+  wxAppId: wxa830230a1a818a46
+  wxAppSecret: 6d2141b57fc59362f9f631f89d0243c7
+  baseHttp: http://47.98.161.153
+  templateId:
+    orderStatus: tJgwhhVYNoFEk3EDcRO2vJG-5DZVi4Xnk4CGTZhB8Pw
+

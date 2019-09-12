@@ -24,12 +24,18 @@ public class UploadServiceImpl implements UploadService {
     private ImgMapper imgMapper;
 
     @Value("${ftp.imageBaseUrl}")
+    //返回地址
     public String imageBaseUrl;
+
+    @Value("${ftp.uploadFile}")
+    //上传路径
+    public String uploadFile;
+
 
     @Override
     public ServerResponse<String> upload(MultipartFile multipartFile) {
         //指定文件夹上传路径
-        String pathDir = "F:\\upload";
+        String pathDir = uploadFile;
         File dir = new File(pathDir);
 
         //判断目录是否存在，不存在则创建目录
@@ -56,9 +62,8 @@ public class UploadServiceImpl implements UploadService {
             Img img=new Img();
             img.setPath(newFileName);
             imgMapper.insertSelective(img);
-
             //上传成功删除本地
-            //file.delete();
+            file.delete();
             System.out.println("上传文件成功！");
         } catch (IOException e) {
             System.out.println("上传文件失败！");
