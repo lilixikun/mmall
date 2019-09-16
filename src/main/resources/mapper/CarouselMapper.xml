@@ -17,10 +17,17 @@
     from mmall_carousel
     where id = #{id,jdbcType=INTEGER}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from mmall_carousel
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
+  <delete id="deleteAll" parameterType="java.lang.Integer" >
+    delete from mmall_carousel
+    where 1=1
+  </delete>
+
   <insert id="insert" parameterType="com.mmall.entity.Carousel" >
     insert into mmall_carousel (id, url, link, 
       create_time, update_time)

@@ -34,7 +34,17 @@ public class CarouselServiceImpl implements CarouselService {
 
     @Override
     public ServerResponse delCarousel(Integer id) {
-        int resultCount=mapper.deleteByPrimaryKey(id);
+        int resultCount=0;
+        //如果id为空删除所有的轮播图
+        if (id==null){
+            resultCount=mapper.deleteAll();
+            if (resultCount>0){
+                return ServerResponse.createBySuccessMessage("删除成功");
+            }
+        }
+
+        //根据指定id删除
+        resultCount=mapper.deleteByPrimaryKey(id);
         if (resultCount>0){
             return ServerResponse.createBySuccessMessage("删除成功");
         }

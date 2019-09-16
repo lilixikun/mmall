@@ -5,6 +5,9 @@ import com.mmall.entity.Carousel;
 import java.util.List;
 
 public interface CarouselMapper {
+
+    int deleteAll();
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(Carousel record);
