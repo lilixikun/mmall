@@ -22,14 +22,13 @@ public class UploadController {
     }
 
     @GetMapping(value = "/delete")
-    public ServerResponse delete(@RequestParam("id") Integer id) throws IOException {
+    public ServerResponse delete(@RequestParam("path") String path) {
 
-        return uploadService.deletePic(id);
+        return uploadService.deletePic(path);
     }
 
     @GetMapping("/download")
-    public ServerResponse download(@RequestParam("fileName")String fileName) throws IOException{
-        uploadService.download(fileName);
-        return null;
+    public ServerResponse download(@RequestParam("fileName") String fileName) {
+        return uploadService.download(fileName);
     }
 }

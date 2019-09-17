@@ -32,7 +32,7 @@
     insert into mmall_carousel (id, url, link, 
       create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{link,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+     now(),now()
   </insert>
 
   <select id="selectAll" resultMap="BaseResultMap">

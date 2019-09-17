@@ -2,7 +2,7 @@ package com.mmall.entity;
 
 import java.util.Date;
 
-public class Img {
+public class Media {
     private Integer id;
 
     private String path;

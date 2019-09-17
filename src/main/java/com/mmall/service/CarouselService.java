@@ -14,10 +14,10 @@ public interface CarouselService {
 
     /**
      * 添加轮播图
-     * @param url
+     * @param carousel
      * @return
      */
-    ServerResponse addCarousel(String url);
+    ServerResponse addCarousel(Carousel carousel);
 
 
     /**

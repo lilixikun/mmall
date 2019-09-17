@@ -1,6 +1,6 @@
 Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.jdbc.BadSqlGrammarException: 
 ### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: Unknown column 'create_time' in 'field list'
-### The error may involve com.mmall.mapper.ImgMapper.insertSelective-Inline
+### The error may involve com.mmall.mapper.MediaMapper.insertSelective-Inline
 ### The error occurred while setting parameters
 ### SQL: insert into mmall_img          ( path,                          create_time,             update_time )           values ( ?,                          now(),             now() )
 ### Cause: java.sql.SQLSyntaxErrorException: Unknown column 'create_time' in 'field list'

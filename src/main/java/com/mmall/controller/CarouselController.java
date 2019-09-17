@@ -1,6 +1,7 @@
 package com.mmall.controller;
 
 import com.mmall.common.ServerResponse;
+import com.mmall.entity.Carousel;
 import com.mmall.service.CarouselService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +19,8 @@ public class CarouselController {
     }
 
     @PostMapping("/addCarousel")
-    @ResponseBody
-    public ServerResponse addCarousel(@RequestParam(value = "url") String url){
-        return carouselService.addCarousel(url);
+    public ServerResponse addCarousel(@RequestBody Carousel carousel){
+        return carouselService.addCarousel(carousel);
     }
 
     @DeleteMapping("/delCarousel/{id}")

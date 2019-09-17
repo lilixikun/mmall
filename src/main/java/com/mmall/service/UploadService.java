@@ -9,6 +9,7 @@ public interface UploadService {
 
     /**
      * 上传文件
+     *
      * @param multipartFile
      * @return
      */
@@ -16,15 +17,17 @@ public interface UploadService {
 
     /**
      * 删除文件
-     * @param id
+     *
+     * @param fileName
      * @return
      */
-    ServerResponse deletePic(Integer id) throws IOException;
+    ServerResponse deletePic(String fileName);
 
     /**
      * 下载文件
+     *
      * @param fileNmae
      * @return
      */
-    ServerResponse download(String fileNmae)throws IOException;
+    ServerResponse download(String fileNmae);
 }

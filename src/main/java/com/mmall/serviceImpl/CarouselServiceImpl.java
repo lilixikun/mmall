@@ -2,9 +2,13 @@ package com.mmall.serviceImpl;
 
 import com.mmall.common.ServerResponse;
 import com.mmall.entity.Carousel;
+import com.mmall.entity.Media;
 import com.mmall.mapper.CarouselMapper;
 import com.mmall.service.CarouselService;
+import com.mmall.utils.FtpUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -15,6 +19,9 @@ public class CarouselServiceImpl implements CarouselService {
     @Resource
     private CarouselMapper mapper;
 
+    @Autowired
+    private FtpUtil ftpUtil;
+
     @Override
     public ServerResponse queryCarousels() {
         List<Carousel> carousels=mapper.selectAll();
@@ -22,9 +29,7 @@ public class CarouselServiceImpl implements CarouselService {
     }
 
     @Override
-    public ServerResponse addCarousel(String url) {
-        Carousel carousel=new Carousel();
-        carousel.setUrl(url);
+    public ServerResponse addCarousel(Carousel carousel) {
         int resultCount=mapper.insertSelective(carousel);
         if (resultCount>0){
             return ServerResponse.createBySuccessMessage("添加成功");
@@ -33,21 +38,24 @@ public class CarouselServiceImpl implements CarouselService {
     }
 
     @Override
+    @Transactional
     public ServerResponse delCarousel(Integer id) {
         int resultCount=0;
-        //如果id为空删除所有的轮播图
-        if (id==null){
-            resultCount=mapper.deleteAll();
+
+        Carousel carousel=mapper.selectByPrimaryKey(id);
+        String path=carousel.getUrl();
+        //删除ftp上的图片
+        ServerResponse response= ftpUtil.delFtp(path.substring(path.lastIndexOf("/")));
+
+        //再删除数据库上的数据
+        if (response.isSuccess()){
+            //根据指定id删除
+            resultCount=mapper.deleteByPrimaryKey(id);
             if (resultCount>0){
                 return ServerResponse.createBySuccessMessage("删除成功");
             }
         }
 
-        //根据指定id删除
-        resultCount=mapper.deleteByPrimaryKey(id);
-        if (resultCount>0){
-            return ServerResponse.createBySuccessMessage("删除成功");
-        }
         return ServerResponse.createBySuccessMessage("删除失败");
     }
 }
