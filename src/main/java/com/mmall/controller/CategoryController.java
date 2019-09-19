@@ -24,8 +24,7 @@ public class CategoryController {
     private UserService userService;
 
     @PostMapping("/add")
-    @ResponseBody
-    public ServerResponse<String> addCategory(HttpSession session, String categoryName, @RequestParam(value = "parentId", defaultValue = "0") int parentId) {
+    public ServerResponse<String> addCategory(@RequestBody Category category, HttpSession session) {
 
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -34,14 +33,14 @@ public class CategoryController {
         //校验一下是否是管理员
         if (userService.checkAdminRole(user)) {
             //增加我们处理分类的逻辑
-            return categoryService.addCategory(categoryName, parentId);
+            return categoryService.addCategory(category);
         } else {
             return ServerResponse.createByErrorMessage("无权限操作,需要管理员权限");
         }
     }
 
     @PostMapping("/update")
-    public ServerResponse<String> updateCategory(HttpSession session, String categoryName, int categoryId) {
+    public ServerResponse<String> updateCategory(@RequestBody Category category, HttpSession session) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NO_LOGIN.getCode(), "用户未登录,请登录");
@@ -49,7 +48,7 @@ public class CategoryController {
         //校验一下是否是管理员
         if (userService.checkAdminRole(user)) {
             //修改逻辑
-            return categoryService.updateCategory(categoryName, categoryId);
+            return categoryService.updateCategory(category);
         } else {
             return ServerResponse.createByErrorMessage("无权限操作,需要管理员权限");
         }

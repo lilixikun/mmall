@@ -38,7 +38,8 @@ public class ProductManagerController {
 
     @GetMapping("/list")
     public ServerResponse getList(@RequestParam(value = "pageNum",defaultValue = "1",required = false)Integer pageNum,
-                                                 @RequestParam(value = "pageSize",defaultValue = "10",required = false)Integer pageSize,
+                                  @RequestParam(value = "pageSize",defaultValue = "10",required = false)Integer pageSize,
+                                  @RequestParam(value = "categoryId",required = false) String categoryId,
                                   @RequestParam(value = "productName",required = false) String productName,
                                   @RequestParam(value = "productId",required = false) Integer productId){
 

@@ -9,19 +9,17 @@ public interface CategoryService {
 
     /**
      * 添加分类
-     * @param categoryName
-     * @param parentId
+     * @param category
      * @return
      */
-    ServerResponse<String> addCategory(String categoryName,int parentId);
+    ServerResponse<String> addCategory(Category category);
 
     /**
      * 修改分类
-     * @param categoryName
-     * @param categoryId
+     * @param category
      * @return
      */
-    ServerResponse<String> updateCategory(String categoryName,int categoryId);
+    ServerResponse<String> updateCategory(Category category);
 
     /**
      * 删除分裂以及下级
