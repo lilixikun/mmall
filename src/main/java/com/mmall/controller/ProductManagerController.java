@@ -3,7 +3,6 @@ package com.mmall.controller;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.dto.ProductDTO;
-import com.mmall.entity.Product;
 import com.mmall.exceptionHandle.MmallException;
 import com.mmall.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/manager/product")

@@ -5,24 +5,20 @@ import com.mmall.common.ServerResponse;
 import com.mmall.entity.User;
 import com.mmall.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/user/manager/")
+@RequestMapping("/user/manager")
 public class UserManagerController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping("login")
-    @ResponseBody
-    public ServerResponse<User> login(String username, String paddword, HttpSession session){
-        ServerResponse<User> response=userService.login(username,paddword);
+    @GetMapping("/login")
+    public ServerResponse<User> login(@RequestParam("userName") String userName,@RequestParam("password") String password, HttpSession session){
+        ServerResponse<User> response=userService.login(userName,password);
         if (response.isSuccess()){
             User user=response.getData();
             if (user.getRole()== Const.Role.ROLE_ADMIN){

@@ -148,7 +148,7 @@
 
 
     <select id="checkUsername" resultType="int" parameterType="java.lang.String">
-  select COUNT(1)  from mmall_user where user_name=#{username}
+  select COUNT(1)  from mmall_user where user_name=#{userName}
   </select>
 
     <select id="checkEmail" resultType="int" parameterType="java.lang.String">

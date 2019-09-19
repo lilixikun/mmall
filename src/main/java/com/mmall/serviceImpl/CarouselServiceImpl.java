@@ -56,6 +56,6 @@ public class CarouselServiceImpl implements CarouselService {
             }
         }
 
-        return ServerResponse.createBySuccessMessage("删除失败");
+        return ServerResponse.createByErrorMessage("删除失败");
     }
 }

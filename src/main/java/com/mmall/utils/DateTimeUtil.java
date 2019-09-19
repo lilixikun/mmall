@@ -2,6 +2,7 @@ package com.mmall.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,6 +11,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+@Component
 public class DateTimeUtil {
     private static final Logger logger = LoggerFactory.getLogger(DateTimeUtil.class);
     public static final String date_fm_zh_long = "yyyy-MM-dd";

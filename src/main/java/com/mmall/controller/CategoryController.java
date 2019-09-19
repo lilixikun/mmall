@@ -41,7 +41,6 @@ public class CategoryController {
     }
 
     @PostMapping("/update")
-    @ResponseBody
     public ServerResponse<String> updateCategory(HttpSession session, String categoryName, int categoryId) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {

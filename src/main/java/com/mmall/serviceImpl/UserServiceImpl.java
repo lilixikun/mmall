@@ -25,14 +25,15 @@ public class UserServiceImpl implements UserService {
         }
 
         //md5后的密码去查询
-        //String md5Password = MD5Util.MD5EncodeUtf8(password);
-        User user = userMapper.selectLogin(userName, password);
+        String md5Password = MD5Util.md5(password);
+
+        User user = userMapper.selectLogin(userName, md5Password);
 
         if (user == null) {
             return ServerResponse.createByErrorMessage("账户或密码错误");
         }
         user.setPassword("");
-        return ServerResponse.createBySuccessMessage("登录成功");
+        return ServerResponse.createBySuccess(user);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
         //默认设置成用户角色
         user.setRole(Const.Role.ROLE_CUSTOMER);
         //md5加密
-        user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
+        user.setPassword(MD5Util.md5(user.getPassword()));
 
         int resultCount = userMapper.insertSelective(user);
         if (resultCount == 0) {
@@ -161,7 +162,7 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createByErrorMessage("未找到该用户信息");
         }
 
-        user.setPassword(MD5Util.MD5EncodeUtf8(passwordNew));
+        user.setPassword(MD5Util.md5(passwordNew));
         int updateCount = userMapper.updateByPrimaryKeySelective(user);
         if (updateCount > 0) {
             return ServerResponse.createBySuccessMessage("密码已重置");

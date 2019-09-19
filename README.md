@@ -57,8 +57,8 @@ npm run start/dev
 ```
 
 ### Java
-1.配置好本地环境
-2.使用idea导入项目
-3.使用sql初始化
-4.run 起来
+- 配置好本地环境
+- 使用idea导入项目
+- 使用sql初始化
+- run 起来
 

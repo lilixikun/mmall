@@ -22,7 +22,7 @@
   </select>
 
   <select id="selectAllCategory" resultType="map">
-    select id ,`name`
+    select id ,name
     from mmall_category
   </select>
 
