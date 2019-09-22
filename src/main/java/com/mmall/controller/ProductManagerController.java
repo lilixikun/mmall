@@ -19,7 +19,7 @@ public class ProductManagerController {
     private ProductService productService;
 
     @PostMapping("/productSave")
-    public ServerResponse productSave(@Valid ProductDTO productDTO, BindingResult bindingResult)throws MmallException {
+    public ServerResponse productSave(@RequestBody  @Valid ProductDTO productDTO,BindingResult bindingResult)throws MmallException {
         if (bindingResult.hasErrors()){
             throw new MmallException(ResponseCode.FORM_ERR.getCode(),bindingResult.getFieldError().getDefaultMessage());
         }
@@ -39,10 +39,10 @@ public class ProductManagerController {
     @GetMapping("/list")
     public ServerResponse getList(@RequestParam(value = "pageNum",defaultValue = "1",required = false)Integer pageNum,
                                   @RequestParam(value = "pageSize",defaultValue = "10",required = false)Integer pageSize,
-                                  @RequestParam(value = "categoryId",required = false) String categoryId,
+                                  @RequestParam(value = "categoryId",required = false) Integer categoryId,
                                   @RequestParam(value = "productName",required = false) String productName,
                                   @RequestParam(value = "productId",required = false) Integer productId){
 
-        return productService.getList(pageNum,pageSize,productName,productId);
+        return productService.getList(pageNum,pageSize,categoryId,productName,productId);
     }
 }

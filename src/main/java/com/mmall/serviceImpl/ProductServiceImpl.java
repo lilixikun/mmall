@@ -79,8 +79,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ServerResponse getList(Integer pageNum, Integer pageSize,String productName,Integer productId) {
-        List<Product> productList=productMapper.selectProducts(productName,productId);
+    public ServerResponse getList(Integer pageNum, Integer pageSize,Integer categoryId, String productName,Integer productId) {
+        List<Product> productList=productMapper.selectProducts(categoryId,productName,productId);
         List<ProductDTO> productDTOList=new ArrayList<>();
         for (Product product:productList){
             ProductDTO productDTO=new ProductDTO();

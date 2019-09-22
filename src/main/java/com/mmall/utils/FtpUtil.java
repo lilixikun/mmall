@@ -53,9 +53,15 @@ public class FtpUtil {
        }
         try {
             ftpClient.setBufferSize(1024);
+            //开启被动模式（按自己如何配置的ftp服务器来决定是否开启）
             ftpClient.enterLocalPassiveMode();
+            //进入到文件保存目录
+            boolean c= ftpClient.changeWorkingDirectory(pathDir);
+            //ftpClient.listFiles(pathDir);
+            //以文件流形式储存
+            ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
+            //执行上传
             ftpClient.storeFile(newFileName, uploadFile.getInputStream());
-
             //插入到数据库中
             return ServerResponse.createBySuccessMessage(newFileName);
         } catch (IOException e) {
@@ -97,14 +103,13 @@ public class FtpUtil {
         try {
             //连接服务器
             ftpClient.connect(ftpConfig.getAddress());
-            //设置字符集
-            ftpClient.setControlEncoding("UTF-8");
-            //进入到文件保存目录
-            ftpClient.changeWorkingDirectory(ftpConfig.getUploadFile());
-            //以文件流形式储存
-            ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
             //登录ftp
             isSuccess = ftpClient.login(ftpConfig.getUsername(), ftpConfig.getPassword());
+           if (isSuccess){
+               //设置字符集
+               ftpClient.setControlEncoding("UTF-8");
+               ftpClient.enterLocalPassiveMode();
+           }
         } catch (IOException e) {
             logger.error("connet ftp err");
         }

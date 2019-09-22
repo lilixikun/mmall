@@ -12,14 +12,7 @@ public interface CategoryService {
      * @param category
      * @return
      */
-    ServerResponse<String> addCategory(Category category);
-
-    /**
-     * 修改分类
-     * @param category
-     * @return
-     */
-    ServerResponse<String> updateCategory(Category category);
+    ServerResponse<String> categorySave(Category category);
 
     /**
      * 删除分裂以及下级

@@ -28,12 +28,12 @@ pagehelper:
   page-size-zero: true
 
 ftp:
-  address: 127.0.0.1
+  address: 47.98.161.153
   port: 21
-  username: xikun
-  xikun: xikun
-  bastPath: "F:\\upload"
-  imageBaseUrl: ftp://192.168.205.61/img/
+  username: ftpuser
+  password: 123456
+  uploadFile: /img
+  imageBaseUrl: ftp://47.98.161.153/img/
 
 
 logging:

@@ -37,5 +37,5 @@ public interface ProductService {
      * @param pageSize
      * @return
      */
-    ServerResponse getList(Integer pageNum,Integer pageSize,String productName,Integer productId);
+    ServerResponse getList(Integer pageNum,Integer pageSize,Integer categoryId, String productName,Integer productId);
 }

@@ -18,26 +18,24 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper mapper;
 
     @Override
-    public ServerResponse<String> addCategory(Category category) {
-
-        if (category.getParentId()==null){
-            category.setParentId(0);
+    public ServerResponse<String> categorySave(Category category) {
+        int resultCount = 0;
+        //如果没有id执行新增
+        if (category.getId() == null) {
+            //默认添加顶级
+            if (category.getParentId() == null) {
+                category.setParentId(0);
+            }
+            resultCount = mapper.insertSelective(category);
+        } else {
+            //否则执行修改操作
+            resultCount = mapper.updateByPrimaryKeySelective(category);
         }
 
-        int resultCount = mapper.insertSelective(category);
         if (resultCount > 0) {
             return ServerResponse.createBySuccessMessage("添加商品分类成功");
         }
-        return ServerResponse.createByErrorMessage("添加商品分类失败");
-    }
-
-    @Override
-    public ServerResponse<String> updateCategory(Category category) {
-        int resultCount = mapper.updateByPrimaryKeySelective(category);
-        if (resultCount > 0) {
-            return ServerResponse.createBySuccessMessage("修改成功");
-        }
-        return ServerResponse.createByErrorMessage("修改失败");
+        return ServerResponse.createByErrorMessage("操作失败");
     }
 
     @Override

@@ -10,7 +10,7 @@ public class Category {
 
     private String name;
 
-    private Boolean status;
+    private Integer status;
 
     private Integer sortOrder;
 
@@ -42,11 +42,11 @@ public class Category {
         this.name = name == null ? null : name.trim();
     }
 
-    public Boolean getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
