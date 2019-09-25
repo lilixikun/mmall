@@ -63,7 +63,7 @@ public class FtpUtil {
             //执行上传
             ftpClient.storeFile(newFileName, uploadFile.getInputStream());
             //插入到数据库中
-            return ServerResponse.createBySuccessMessage(newFileName);
+            return ServerResponse.createBySuccessMessage(ftpConfig.getImageBaseUrl()+newFileName);
         } catch (IOException e) {
             logger.error("上传文件异常", e);
             e.printStackTrace();

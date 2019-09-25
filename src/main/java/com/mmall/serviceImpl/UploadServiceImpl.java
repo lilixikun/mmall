@@ -36,7 +36,7 @@ public class UploadServiceImpl implements UploadService {
             media.setPath(response.getMsg());
             mediaMapper.insertSelective(media);
             HashMap data=new HashMap();
-            data.put("url",ftpConfig.getHttpPath()+media.getPath());
+            data.put("url",ftpConfig.getImageBaseUrl()+media.getPath());
             data.put("id",media.getId());
             return ServerResponse.createBySuccess(data);
         }

@@ -25,6 +25,6 @@ public class FtpConfig {
     private String uploadFile;
 
     /** 前端访问地址*/
-    private String httpPath;
+    private String imageBaseUrl;
 
 }

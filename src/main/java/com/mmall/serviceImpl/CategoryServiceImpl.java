@@ -5,7 +5,6 @@ import com.mmall.dto.CategoryDTO;
 import com.mmall.entity.Category;
 import com.mmall.mapper.CategoryMapper;
 import com.mmall.service.CategoryService;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

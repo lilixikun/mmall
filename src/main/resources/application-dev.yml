@@ -14,7 +14,7 @@ spring:
     password: 123456
 #logging:
 #  level:
-#    com.mmall.mapper: trace
+#    com.mmall.mapper: tr47.98.161.153ace
 
 server:
   port: 8085
@@ -36,7 +36,7 @@ ftp:
   username: xikun
   password: xikun
   uploadFile: "F:\\ftpfile"
-  httpPath: ftp://127.0.0.1/
+  imageBaseUrl: ftp://127.0.0.1/
 wechat:
   wxAppId: wxa830230a1a818a46
   wxAppSecret: 6d2141b57fc59362f9f631f89d0243c7

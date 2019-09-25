@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
         //md5后的密码去查询
         String md5Password = MD5Util.md5(password);
-
+        System.out.print(md5Password);
         User user = userMapper.selectLogin(userName, md5Password);
 
         if (user == null) {

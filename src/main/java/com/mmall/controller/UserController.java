@@ -74,7 +74,7 @@ public class UserController {
         if (user!=null){
             return ServerResponse.createBySuccess(user);
         }
-        return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登陆，需要强制登陆");
+        return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登陆");
     }
 
     @GetMapping("/foegetByQuestion")
