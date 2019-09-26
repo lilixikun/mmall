@@ -126,7 +126,7 @@
   </select>
 
     <delete id="deleteByUserIdProductIds" parameterType="map">
-        delete from mmall_cart where id = #{id,jdbcType=INTEGER}
+        delete from mmall_cart where user_id = #{userId,jdbcType=INTEGER}
         <if test="productIdList != null">
             and product_id in
             <foreach collection="productIdList" item="item" index="index" open="(" separator="," close=")">

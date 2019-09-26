@@ -32,11 +32,11 @@ public class CartController {
     @PostMapping("/updateCart")
     public ServerResponse updateCart(@RequestBody JSONObject jsonObject, HttpSession session) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
-        return cartService.addCart(user.getId(), jsonObject.getInteger("count"), jsonObject.getInteger("productId"));
+        return cartService.updateCart(user.getId(), jsonObject.getInteger("count"), jsonObject.getInteger("productId"));
     }
 
     @DeleteMapping("/delete/{prodtcuId}")
-    public ServerResponse delete(HttpSession session, String prodtcuId) {
+    public ServerResponse delete(HttpSession session, @PathVariable("prodtcuId") String prodtcuId) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         return cartService.deleteCart(user.getId(), prodtcuId);
     }
@@ -44,9 +44,7 @@ public class CartController {
     @PostMapping("/selectOrUnSelect")
     public ServerResponse sellectOne(@RequestBody JSONObject jsonObject, HttpSession session) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
-        Integer productId = Integer.parseInt(jsonObject.get("productId").toString());
-        Integer checked = Integer.parseInt(jsonObject.get("checked").toString());
-        return cartService.selectOrUnSelect(user.getId(), productId, checked);
+        return cartService.selectOrUnSelect(user.getId(), jsonObject.getInteger("productId"), jsonObject.getInteger("checked"));
     }
 
     @GetMapping("/getProductCount")

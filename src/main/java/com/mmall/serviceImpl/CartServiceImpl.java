@@ -13,7 +13,8 @@ import com.mmall.mapper.CartMapper;
 import com.mmall.mapper.ProductMapper;
 import com.mmall.service.CartService;
 import com.mmall.utils.BigDecimalUtil;
-import org.springframework.beans.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,8 @@ public class CartServiceImpl implements CartService {
 
     @Resource
     private CartMapper cartMapper;
+
+    private Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
 
     @Override
     public ServerResponse<CartDTO> list(Integer userId) {
@@ -90,8 +93,12 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public ServerResponse selectOrUnSelect(Integer userId, Integer productId, Integer checked) {
-        cartMapper.checkedOrUncheckedProduct(userId, productId, checked);
-        return null;
+        int result= cartMapper.checkedOrUncheckedProduct(userId, productId, checked);
+        if (result>0){
+            return ServerResponse.createBySuccess();
+        }else {
+            return ServerResponse.createBySuccessMessage("操作失败");
+        }
     }
 
     @Override
