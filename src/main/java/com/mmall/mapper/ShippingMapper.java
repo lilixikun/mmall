@@ -2,10 +2,13 @@ package com.mmall.mapper;
 
 import com.mmall.entity.Shipping;
 
-public interface ShippingMapper {
-    int deleteByPrimaryKey(Integer id);
+import java.util.List;
 
-    int insert(Shipping record);
+public interface ShippingMapper {
+
+    List<Shipping> selectShippingByUserId(Integer userId);
+
+    int deleteByPrimaryKey(Integer id);
 
     int insertSelective(Shipping record);
 
@@ -13,5 +16,4 @@ public interface ShippingMapper {
 
     int updateByPrimaryKeySelective(Shipping record);
 
-    int updateByPrimaryKey(Shipping record);
 }

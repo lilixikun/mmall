@@ -164,7 +164,7 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(MD5Util.md5(passwordNew));
         int updateCount = userMapper.updateByPrimaryKeySelective(user);
-        if (updateCount > 0) {
+        if (updateCount>0) {
             return ServerResponse.createBySuccessMessage("密码已重置");
         }
 
@@ -172,21 +172,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ServerResponse<String> updateInfo(User user) {
-        //校验email 是否存在,并且如果email 存在的话不能是当前用户的
-        int resultCount = userMapper.checkEmailByUserId(user.getEmail(), user.getId());
-        if (resultCount > 0) {
-            return ServerResponse.createByErrorMessage("email已存在，请更换email");
-        }
+    public ServerResponse updateInfo(User user) {
 
-        User newUser = new User();
-        newUser.setAnswer(user.getAnswer());
-        newUser.setEmail(user.getEmail());
-        newUser.setPhone(user.getPhone());
-        newUser.setQuestion(user.getQuestion());
-        int updateCount = userMapper.updateByPrimaryKeySelective(newUser);
-        if (updateCount > 0) {
-            return ServerResponse.createBySuccessMessage("更新信息c成功");
+        //用户名无法修改
+
+        //email也要进行一个校验,校验新的email是不是已经存在,并且存在的email如果相同的话,不能是我们当前的这个用户的.
+        if (null != user.getEmail()) {
+            int resultCount = userMapper.checkEmailByUserId(user.getEmail(), user.getId());
+            if (resultCount > 0) {
+                return ServerResponse.createByErrorMessage("email已存在，请更换email");
+            }
+        }
+        int updateCount = userMapper.updateByPrimaryKeySelective(user);
+        if (updateCount>0) {
+            //更新成功刷新缓存
+            User newUser=userMapper.selectByPrimaryKey(user.getId());
+            return ServerResponse.createBySuccess(newUser);
         }
         return ServerResponse.createByErrorMessage("更新信息失败");
     }

@@ -102,11 +102,18 @@ public class UserController {
     }
 
     @PostMapping("/updateInfo")
-    public ServerResponse<String> updateInfo(User user,HttpSession session) throws MmallException {
+    public ServerResponse<String> updateInfo(@RequestBody User user,HttpSession session) throws MmallException {
         User user1=(User) session.getAttribute(Const.CURRENT_USER);
         if (user1==null){
            throw new MmallException(ResponseCode.NO_LOGIN);
         }
-        return userService.updateInfo(user);
+        ServerResponse response= userService.updateInfo(user);
+        //更新成功刷新缓存
+        if (response.isSuccess()){
+            session.setAttribute(Const.CURRENT_USER,response.getData());
+        }else {
+            return ServerResponse.createBySuccessMessage("更新失败");
+        }
+        return ServerResponse.createBySuccess();
     }
 }

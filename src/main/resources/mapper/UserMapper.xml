@@ -63,8 +63,8 @@
             <if test="role != null">
                 role,
             </if>
-                create_time,
-                update_time,
+            create_time,
+            update_time,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -98,8 +98,8 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.mmall.entity.User">
         update mmall_user
         <set>
-            <if test="username != null">
-                username = #{username,jdbcType=VARCHAR},
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
             </if>
             <if test="password != null">
                 password = #{password,jdbcType=VARCHAR},
@@ -122,9 +122,7 @@
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=TIMESTAMP},
-            </if>
+            update_time =now()
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -142,7 +140,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-<update id="updatePasswordByUsername" parameterType="com.mmall.entity.User">
+    <update id="updatePasswordByUsername" parameterType="com.mmall.entity.User">
     update mmall_user set password=#{password} where user_name=#{userName}
 </update>
 
