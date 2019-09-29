@@ -24,6 +24,13 @@ public interface ShippingService {
 
 
     /**
+     * 设置默认地址
+     * @param id
+     * @return
+     */
+    ServerResponse settingDef(Integer id,Integer userId);
+
+    /**
      * 删除
      *
      * @param shippingId

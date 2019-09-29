@@ -30,11 +30,14 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public ServerResponse login(@RequestBody User user) {
+    public ServerResponse login(@RequestBody User user,HttpSession session) {
         ServerResponse<User> serverResponse = userService.login(user.getUserName(), user.getPassword());
         //是否登录成功
         if (serverResponse.isSuccess()) {
             String token= UUID.randomUUID().toString();
+
+            session.setAttribute(Const.CURRENT_USER,serverResponse.getData());
+
             //存入缓存redis
             return ServerResponse.createBySuccess(token);
         }

@@ -14,10 +14,11 @@
     <result column="receiver_zip" property="receiverZip" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="checked" property="checked" javaType="INTEGER"/>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, receiver_name, receiver_phone, receiver_mobile, receiver_province, receiver_city, 
-    receiver_district, receiver_address, receiver_zip, create_time, update_time
+    id, user_id, receiver_name, receiver_phone, receiver_mobile, receiver_province, receiver_city,
+    receiver_district, receiver_address, receiver_zip, create_time, update_time,checked
   </sql>
 
   <select id="selectShippingByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -25,6 +26,7 @@
     <include refid="Base_Column_List" />
     from mmall_shipping
     where user_id = #{userId}
+    order by checked DESC
   </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -147,6 +149,9 @@
       <if test="receiverZip != null" >
         receiver_zip = #{receiverZip,jdbcType=VARCHAR},
       </if>
+      <if test="checked != null" >
+        checked = #{checked,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -157,4 +162,11 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <update id="settingDef" parameterType="map">
+    update
+    mmall_shipping
+    set
+    checked = 0
+    where  user_id =#{userId}
+  </update>
 </mapper>
