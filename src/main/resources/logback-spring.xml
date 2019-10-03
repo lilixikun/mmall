@@ -23,8 +23,8 @@
         </encoder>
         <!--滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--路径-->
-            <fileNamePattern>E:\JAVA\mmall\mmall_log\info.%d.log</fileNamePattern>
+            <!--路径         E:\JAVA\mmall\mmall_log\info.%d.log-->
+            <fileNamePattern>/developer/jar/mmall_log/info.%d.log</fileNamePattern>
         </rollingPolicy>
     </appender>
 
@@ -40,8 +40,8 @@
         </encoder>
         <!--滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--路径-->
-            <fileNamePattern>E:\JAVA\mmall\mmall_log\error.%d.log</fileNamePattern>
+            <!--路径  E:\JAVA\mmall\mmall_log\error.%d.log-->
+            <fileNamePattern>/developer/jar/mmall_log/error.%d.log</fileNamePattern>
         </rollingPolicy>
     </appender>
 

@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1/mmall?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    url: jdbc:mysql://47.98.161.153/mmall?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
     username: root
-    password: 123456
+    password: xikun@123
     driver-class-name: com.mysql.cj.jdbc.Driver
   http:
     encoding:
@@ -33,7 +33,7 @@ ftp:
   username: ftpuser
   password: 123456
   uploadFile: /img
-  imageBaseUrl: http://47.98.161.153:8070/
+  imageBaseUrl: http://47.98.161.153:8070/img
 
 
 logging:
