@@ -1,14 +1,6 @@
 spring:
   datasource:
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
     url: jdbc:mysql://47.98.161.153/mmall?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
-=======
-    url: jdbc:mysql://localhost/mmall?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
->>>>>>> Stashed changes
-=======
-    url: jdbc:mysql://localhost/mmall?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
->>>>>>> Stashed changes
     username: root
     password: xikun@123
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -41,16 +33,7 @@ ftp:
   username: ftpuser
   password: 123456
   uploadFile: /img
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  imageBaseUrl: http://47.98.161.153:8070/img
-=======
   imageBaseUrl: http://47.98.161.153:8070/img/
->>>>>>> Stashed changes
-=======
-  imageBaseUrl: http://47.98.161.153:8070/img/
->>>>>>> Stashed changes
-
 
 logging:
   config:
