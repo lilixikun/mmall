@@ -2,6 +2,7 @@ package com.mmall.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mmall.common.Const;
+import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.entity.User;
 import com.mmall.service.CartService;
@@ -20,6 +21,9 @@ public class CartController {
     @GetMapping("/list")
     public ServerResponse list(HttpSession session) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NO_LOGIN.getCode(), "用户未登录,请登录");
+        }
         return cartService.list(user.getId());
     }
 

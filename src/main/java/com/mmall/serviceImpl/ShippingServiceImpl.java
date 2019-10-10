@@ -30,7 +30,7 @@ public class ShippingServiceImpl implements ShippingService {
         Shipping shipping = new Shipping();
         BeanUtils.copyProperties(shippingDTO, shipping);
 
-        if (shippingDTO.getChecked()==1){
+        if (shippingDTO.getChecked() == 1) {
             shippingMapper.settingDef(userId);
         }
         //执行添加操作
@@ -38,13 +38,13 @@ public class ShippingServiceImpl implements ShippingService {
             shipping.setUserId(userId);
             shippingMapper.insertSelective(shipping);
         } else {
-            shippingMapper.updateByPrimaryKeySelective(shipping);
+            int count = shippingMapper.updateByPrimaryKeySelective(shipping);
         }
         return ServerResponse.createBySuccess();
     }
 
     @Override
-    public ServerResponse settingDef(Integer id,Integer userId) {
+    public ServerResponse settingDef(Integer id, Integer userId) {
         if (null == id || "".equals(id)) {
             return ServerResponse.createBySuccessMessage("缺少参数id");
         }

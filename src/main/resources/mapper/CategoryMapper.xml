@@ -28,7 +28,7 @@
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_category
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} or parent_id=#{id}
   </delete>
     <insert id="insert" parameterType="com.mmall.entity.Category">
     insert into mmall_category (id, parent_id, name, 

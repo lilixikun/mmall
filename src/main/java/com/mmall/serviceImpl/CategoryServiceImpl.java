@@ -39,6 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ServerResponse<String> deleteCategory(int categoryId) {
+        //删除本级及下级
         int resultCount = mapper.deleteByPrimaryKey(categoryId);
         if (resultCount > 0) {
             return ServerResponse.createBySuccess("删除成功");
