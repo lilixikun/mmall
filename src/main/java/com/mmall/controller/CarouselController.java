@@ -1,5 +1,6 @@
 package com.mmall.controller;
 
+import com.mmall.AspectHand.AdminLoginRequired;
 import com.mmall.common.ServerResponse;
 import com.mmall.entity.Carousel;
 import com.mmall.service.CarouselService;
@@ -14,17 +15,19 @@ public class CarouselController {
     private CarouselService carouselService;
 
     @GetMapping("/list")
-    public ServerResponse queryCarousels(){
+    public ServerResponse queryCarousels() {
         return carouselService.queryCarousels();
     }
 
     @PostMapping("/addCarousel")
-    public ServerResponse addCarousel(@RequestBody Carousel carousel){
+    @AdminLoginRequired
+    public ServerResponse addCarousel(@RequestBody Carousel carousel) {
         return carouselService.addCarousel(carousel);
     }
 
     @DeleteMapping("/delCarousel/{id}")
-    public ServerResponse delCarousel(@PathVariable(value = "id",required = false) Integer id){
+    @AdminLoginRequired
+    public ServerResponse delCarousel(@PathVariable(value = "id", required = false) Integer id) {
         return carouselService.delCarousel(id);
     }
 }

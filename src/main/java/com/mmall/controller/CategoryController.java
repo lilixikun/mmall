@@ -1,5 +1,6 @@
 package com.mmall.controller;
 
+import com.mmall.AspectHand.AdminLoginRequired;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
@@ -20,38 +21,17 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @Autowired
-    private UserService userService;
-
     @PostMapping("/categorySave")
-    public ServerResponse<String> categorySave(@RequestBody Category category, HttpSession session) {
+    @AdminLoginRequired
+    public ServerResponse<String> categorySave(@RequestBody Category category) {
 
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
-        if (user == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NO_LOGIN.getCode(), "用户未登录,请登录");
-        }
-        //校验一下是否是管理员
-        if (userService.checkAdminRole(user)) {
-            //增加我们处理分类的逻辑
-            return categoryService.categorySave(category);
-        } else {
-            return ServerResponse.createByErrorMessage("无权限操作,需要管理员权限");
-        }
+        return categoryService.categorySave(category);
     }
 
     @DeleteMapping("/delete/{categoryId}")
-    public ServerResponse<String> deleteCategory(HttpSession session, @PathVariable("categoryId") int categoryId) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
-        if (user == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NO_LOGIN.getCode(), "用户未登录,请登录");
-        }
-        //校验一下是否是管理员
-        if (userService.checkAdminRole(user)) {
-            //删除逻辑
-            return categoryService.deleteCategory(categoryId);
-        } else {
-            return ServerResponse.createByErrorMessage("无权限操作,需要管理员权限");
-        }
+    @AdminLoginRequired
+    public ServerResponse<String> deleteCategory(@PathVariable("categoryId") int categoryId) {
+        return categoryService.deleteCategory(categoryId);
     }
 
     @GetMapping("/getCategory")
@@ -60,12 +40,12 @@ public class CategoryController {
     }
 
     @GetMapping("/allCategory")
-    public ServerResponse<Category> getAllCategory(){
+    public ServerResponse<Category> getAllCategory() {
         return categoryService.getAllCategory();
     }
 
     @GetMapping("/getDeepCategory")
-    public ServerResponse getDeepCategory(@RequestParam(value = "categoryId",defaultValue = "0",required = false) int categoryId) {
+    public ServerResponse getDeepCategory(@RequestParam(value = "categoryId", defaultValue = "0", required = false) int categoryId) {
         return categoryService.getDeepCategory(categoryId);
     }
 }

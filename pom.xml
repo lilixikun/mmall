@@ -77,6 +77,11 @@
                <artifactId>commons-net</artifactId>
                <version>3.6</version>
          </dependency>
+        <!-- 引入AOP -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

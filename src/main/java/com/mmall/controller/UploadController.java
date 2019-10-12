@@ -1,5 +1,6 @@
 package com.mmall.controller;
 
+import com.mmall.AspectHand.AdminLoginRequired;
 import com.mmall.common.ServerResponse;
 import com.mmall.service.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,14 @@ public class UploadController {
     private UploadService uploadService;
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @AdminLoginRequired
     public ServerResponse upload(@RequestParam("file") MultipartFile multipartFile) {
 
         return uploadService.upload(multipartFile);
     }
 
     @GetMapping(value = "/delete")
+    @AdminLoginRequired
     public ServerResponse delete(@RequestParam("path") String path) {
 
         return uploadService.deletePic(path);

@@ -1,5 +1,7 @@
 package com.mmall.controller;
 
+import com.mmall.AspectHand.AdminLoginRequired;
+import com.mmall.AspectHand.LoginRequired;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
@@ -23,24 +25,20 @@ public class ShippingController {
     protected ShippingService shippingService;
 
     @GetMapping("/list")
+    @LoginRequired
     public ServerResponse list(HttpSession session) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
-        if (user == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NO_LOGIN.getCode(), "用户未登录,请登录");
-        }
-        return shippingService.list(user.getId());
+        Integer userId = (Integer) session.getAttribute("token");
+        return shippingService.list(userId);
     }
 
     @PostMapping("/shipSave")
-    public ServerResponse shipSave(@RequestBody @Valid ShippingDTO shipping,BindingResult bindingResult, HttpSession session) throws MmallException {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
-        if (user == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NO_LOGIN.getCode(), "用户未登录,请登录");
-        }
+    @LoginRequired
+    public ServerResponse shipSave(@RequestBody @Valid ShippingDTO shipping, BindingResult bindingResult, HttpSession session) throws MmallException {
         if (bindingResult.hasErrors()) {
             throw new MmallException(ResponseCode.FORM_ERR.getCode(), bindingResult.getFieldError().getDefaultMessage());
         }
-        return shippingService.shipSave(user.getId(), shipping);
+        Integer userId = (Integer) session.getAttribute("token");
+        return shippingService.shipSave(userId, shipping);
     }
 
     @GetMapping("/one/{id}")
@@ -50,20 +48,15 @@ public class ShippingController {
 
 
     @GetMapping("/settingDef/{id}")
-    public Serializable settingDef(@PathVariable("id") Integer id,HttpSession session){
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
-        if (user == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NO_LOGIN.getCode(), "用户未登录,请登录");
-        }
-        return shippingService.settingDef(id,user.getId());
+    public Serializable settingDef(@PathVariable("id") Integer id, HttpSession session) {
+        Integer userId = (Integer) session.getAttribute("token");
+        return shippingService.settingDef(id, userId);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ServerResponse delete(HttpSession session, @PathVariable("id") Integer id) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
-        if (user == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NO_LOGIN.getCode(), "用户未登录,请登录");
-        }
+    @LoginRequired
+    public ServerResponse delete(@PathVariable("id") Integer id) {
+
         return shippingService.del(id);
     }
 }

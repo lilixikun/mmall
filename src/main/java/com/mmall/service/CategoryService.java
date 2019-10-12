@@ -8,7 +8,7 @@ import java.util.List;
 public interface CategoryService {
 
     /**
-     * 添加分类
+     * 添加/修改分类
      * @param category
      * @return
      */

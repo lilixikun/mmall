@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         if (resultCount > 0) {
-            return ServerResponse.createBySuccessMessage("添加商品分类成功");
+            return ServerResponse.createBySuccessMessage("操作成功");
         }
         return ServerResponse.createByErrorMessage("操作失败");
     }
