@@ -33,7 +33,10 @@ ftp:
   username: ftpuser
   password: 123456
   uploadFile: /img
-  imageBaseUrl: http://47.98.161.153:8070/img/
+  imageBaseUrl: http://www.xsy520.work/img/
+
+alipay:
+  callbackUrl: http://www.xsy520.work/order/alipayCallback
 
 logging:
   config:

@@ -101,7 +101,7 @@ public class LogAspect {
         ServletRequestAttributes sra = (ServletRequestAttributes) ra;
         HttpServletRequest request = sra.getRequest();
 
-        //如果该方法上没有权限注解，直接调用目标方法
+        //判断该方法上没有权限注解，没用直接调用目标方法
         if (isLoginRequired(method) == true || adminIsLoginRequired(method) == true) {
             boolean loginResult = (boolean) isLogin(request).get("isLogin");
 
@@ -161,9 +161,7 @@ public class LogAspect {
             map.put("isLogin", true);
             if (user.getRole() == 1) {
                 map.put("role", 1);
-                return map;
             }
-            return map;
         }
         return map;
     }

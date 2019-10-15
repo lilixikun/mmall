@@ -35,7 +35,7 @@ ftp:
   port: 21
   username: xikun
   password: xikun
-  uploadFile: "F:\\ftpfile"
+  uploadFile: F:\ftpfile
   imageBaseUrl: ftp://127.0.0.1/
 wechat:
   wxAppId: wxa830230a1a818a46
@@ -44,3 +44,5 @@ wechat:
   templateId:
     orderStatus: tJgwhhVYNoFEk3EDcRO2vJG-5DZVi4Xnk4CGTZhB8Pw
 
+alipay:
+  callbackUrl: http://www.xsy520.work/order/alipayCallback
