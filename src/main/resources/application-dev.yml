@@ -12,12 +12,16 @@ spring:
     host: 127.0.0.1
     port: 6379
     password: 123456
+  elasticsearch:
+    jest:
+      connection-timeout: 30000
+      read-timeout: 30000
 #logging:
 #  level:
 #    com.mmall.mapper: tr47.98.161.153ace
 
 server:
-  port: 8085
+  port: 8080
   servlet:
     context-path: /
 
@@ -43,6 +47,5 @@ wechat:
   baseHttp: http://47.98.161.153
   templateId:
     orderStatus: tJgwhhVYNoFEk3EDcRO2vJG-5DZVi4Xnk4CGTZhB8Pw
-
 alipay:
-  callbackUrl: http://www.xsy520.work/order/alipayCallback
+ callbackUrl: http://zwcjvw.natappfree.cc/order/alipayCallback

@@ -24,7 +24,7 @@
         <!--滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--路径         E:\JAVA\mmall\mmall_log\info.%d.log-->
-            <fileNamePattern>/mmall_log/info.%d.log</fileNamePattern>
+            <fileNamePattern>${project.basedir}/mmall_log/info.%d.log</fileNamePattern>
         </rollingPolicy>
     </appender>
 
@@ -41,7 +41,7 @@
         <!--滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--路径  E:\JAVA\mmall\mmall_log\error.%d.log-->
-            <fileNamePattern>/mmall_log/error.%d.log</fileNamePattern>
+            <fileNamePattern>${project.basedir}/mmall_log/error.%d.log</fileNamePattern>
         </rollingPolicy>
     </appender>
 

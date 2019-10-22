@@ -30,15 +30,15 @@ public class OrderController {
     protected OrderService orderService;
 
     @RequestMapping("/pay")
-    @LoginRequired
+    //@LoginRequired
     public ServerResponse pay(Long orderNo, HttpServletRequest request, HttpSession session) {
         String path = request.getSession().getServletContext().getRealPath("upload");
         Integer userId = (Integer) session.getAttribute("toke");
-        return orderService.pay(userId, orderNo, path);
+        return orderService.pay(1, orderNo, path);
     }
 
 
-    @RequestMapping("alipayCallback")
+    @RequestMapping("/alipayCallback")
     public Object alipayCallback(HttpServletRequest request) {
         Map<String, String> params = new HashMap<>();
 

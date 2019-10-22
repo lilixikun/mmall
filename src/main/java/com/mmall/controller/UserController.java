@@ -43,17 +43,17 @@ public class UserController {
         ServerResponse<User> serverResponse = userService.login(user.getUserName(), user.getPassword());
         //是否登录成功
         if (serverResponse.isSuccess()) {
-            String token = UUID.randomUUID().toString();
-
+            Integer userId = serverResponse.getData().getId();
+            //UUID.randomUUID().toString();
             //把userId存入session
-            session.setAttribute("token", serverResponse.getData().getId());
+            session.setAttribute("token", userId);
             //设置永不过期
             session.setMaxInactiveInterval(-1);
             //存入缓存redis
-            response.addHeader("token", token);
-            redisUtil.set(token, JSONObject.toJSONString(serverResponse.getData()), 7 * 60 * 60 * 60);
+            response.addIntHeader("token",userId);
+            redisUtil.set(userId.toString(), JSONObject.toJSONString(serverResponse.getData()), 7 * 60 * 60 * 60);
 
-            return ServerResponse.createBySuccess(token);
+            return ServerResponse.createBySuccess(userId);
         }
         return serverResponse;
     }

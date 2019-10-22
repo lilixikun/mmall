@@ -62,11 +62,8 @@ public class OrderServiceImpl implements OrderService {
         tradeService = new AlipayTradeServiceImpl.ClientBuilder().build();
     }
 
-    @Value("${alipay.callbackUrl}")
-    private static String callbackUrl;
-
-    @Value("${ftp.imageBaseUrl}")
-    private static String imageBaseUrl;
+    //@Value("${alipay.callbackUrl}")
+    private static String callbackUrl="http://zwcjvw.natappfree.cc/order/alipayCallback";
 
     @Autowired
     private FtpUtil ftpUtil;
@@ -193,7 +190,7 @@ public class OrderServiceImpl implements OrderService {
                 ;
                 if (serverResponse.isSuccess()) {
                     //拼接上传后路径
-                    String qrUrl = imageBaseUrl + targetFile.getName();
+                    String qrUrl = serverResponse.getMsg();
                     map.put("qrUrl", qrUrl);
                     return ServerResponse.createBySuccess(map);
                 }
