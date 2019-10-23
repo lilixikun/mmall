@@ -12,6 +12,24 @@ public class Const {
         Integer ROLE_ADMIN = 1;//管理员
     }
 
+    public enum ProductStatusEnum{
+        ON_SALE(1,"在线");
+        private String value;
+        private int code;
+        ProductStatusEnum(int code,String value){
+            this.code = code;
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+    }
+
     public interface Cart {
         Integer CHECKED = 1;//即购物车选中状态
         Integer UN_CHECKED = 0;//购物车中未选中状态

@@ -24,16 +24,6 @@ server:
   port: 8080
   servlet:
     context-path: /
-
-mybatis:
-  mapper-locations: classpath:mapper/*.xml
-pagehelper:
-  helper-dialect: mysql
-  reasonable: true
-  support-methods-arguments: true
-  params: count==countSql
-  page-size-zero: true
-
 ftp:
   address: 127.0.0.1
   port: 21

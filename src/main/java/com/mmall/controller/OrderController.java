@@ -3,6 +3,7 @@ package com.mmall.controller;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.demo.trade.config.Configs;
+import com.mmall.AspectHand.AdminLoginRequired;
 import com.mmall.AspectHand.LoginRequired;
 import com.mmall.common.Const;
 import com.mmall.common.ServerResponse;
@@ -11,8 +12,7 @@ import com.mmall.serviceImpl.CartServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -68,10 +68,6 @@ public class OrderController {
             logger.error("支付宝验证回调异常", e);
         }
 
-        //todo 验证各种数据
-
-
-        //
         ServerResponse serverResponse = orderService.alipayCallback(params);
         if (serverResponse.isSuccess()) {
             return Const.AlipayCallback.RESPONSE_SUCCESS;
@@ -83,10 +79,61 @@ public class OrderController {
     @LoginRequired
     public ServerResponse queryOrderPayStatus(Long orderNo, HttpSession session) {
         Integer userId = (Integer) session.getAttribute("toke");
-        ServerResponse response=orderService.queryOrderPayStatus(userId,orderNo);
-        if (response.isSuccess()){
+        ServerResponse response = orderService.queryOrderPayStatus(userId, orderNo);
+        if (response.isSuccess()) {
             return ServerResponse.createBySuccess(true);
         }
         return ServerResponse.createBySuccess(false);
+    }
+
+    @RequestMapping("/creatOrder")
+    @LoginRequired
+    public ServerResponse creatOrder(HttpSession session, Integer shipId) {
+        Integer userId = (Integer) session.getAttribute("toke");
+        return orderService.creatOrder(userId, shipId);
+    }
+
+    @RequestMapping(value = "/cancelOrder", method = RequestMethod.GET)
+    @LoginRequired
+    public ServerResponse cancelOrder(HttpSession session, @RequestParam(value = "orderNo") Long orderNo) {
+        Integer userId = (Integer) session.getAttribute("toke");
+        return orderService.cancel(userId, orderNo);
+    }
+
+    @RequestMapping(value = "/getOrderList", method = RequestMethod.GET)
+    @LoginRequired
+    public ServerResponse getOrderList(HttpSession session, @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+                                       @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+        Integer userId = (Integer) session.getAttribute("toke");
+        return orderService.getOrderList(userId, pageNum, pageSize);
+    }
+
+    @RequestMapping(value = "/getOrderDetail", method = RequestMethod.GET)
+    @LoginRequired
+    public ServerResponse getOrderDetail(HttpSession session, @RequestParam(value = "orderNo") Long orderNo) {
+        Integer userId = (Integer) session.getAttribute("toke");
+        return orderService.getOrderDetail(userId, orderNo);
+    }
+
+    @RequestMapping(value = "/manageOrderList", method = RequestMethod.GET)
+    @AdminLoginRequired
+    public ServerResponse manageOrderList(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+                                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
+                                          @RequestParam(value = "startTime", required = false) String startTime,
+                                          @RequestParam(value = "endTime", required = false) String endTime) {
+        return orderService.manageOrderList(pageNum, pageSize);
+
+    }
+
+    @RequestMapping(value = "/manageOrderDetail/{orderNo}", method = RequestMethod.GET)
+    @AdminLoginRequired
+    public ServerResponse manageOrderDetail(@PathVariable("orderNo") Long orderNo) {
+        return orderService.manageOrderDetail(orderNo);
+    }
+
+    @RequestMapping(value = "/managerSendGoods/{orderNo}", method = RequestMethod.GET)
+    @AdminLoginRequired
+    public ServerResponse managerSendGoods(@PathVariable("orderNo") String orderNo) {
+        return orderService.managerSendGoods(orderNo);
     }
 }

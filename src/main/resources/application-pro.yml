@@ -18,14 +18,7 @@ server:
   servlet:
     context-path: /
 
-mybatis:
-  mapper-locations: classpath:mapper/*.xml
-pagehelper:
-  helper-dialect: mysql
-  reasonable: true
-  support-methods-arguments: true
-  params: count==countSql
-  page-size-zero: true
+
 
 ftp:
   address: 47.98.161.153
