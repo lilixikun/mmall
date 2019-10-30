@@ -11,6 +11,9 @@ public interface CartService {
      */
     ServerResponse list(Integer userId);
 
+    //查询用户选中购物车
+    ServerResponse selectCheckCarts(Integer userId);
+
     /**
      * 添加购物车
      * @param count

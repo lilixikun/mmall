@@ -23,7 +23,7 @@ public class ShippingDTO implements Serializable{
     @Pattern(regexp ="^((13[0-9])|(14[5,7,9])|(15([0-3]|[5-9]))|(166)|(17[0,1,3,5,6,7,8])|(18[0-9])|(19[8|9]))\\d{8}$",message = "请输入有效的手机号码")
     private String receiverPhone;
 
-    @NotNull(message = "收货人电话必填")
+    //@NotNull(message = "收货人电话必填")
     private String receiverMobile;
 
     //@NotNull(message = "省份必填")
@@ -39,6 +39,7 @@ public class ShippingDTO implements Serializable{
     private String receiverAddress;
 
     @NotNull(message = "邮编必填")
+    @Pattern(regexp ="[1-9]\\d{5}",message = "请输入正确的邮政编码")
     private String receiverZip;
 
     private Integer checked;

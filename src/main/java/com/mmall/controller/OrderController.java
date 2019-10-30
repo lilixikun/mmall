@@ -8,7 +8,6 @@ import com.mmall.AspectHand.LoginRequired;
 import com.mmall.common.Const;
 import com.mmall.common.ServerResponse;
 import com.mmall.service.OrderService;
-import com.mmall.serviceImpl.CartServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +28,12 @@ public class OrderController {
     @Autowired
     protected OrderService orderService;
 
-    @RequestMapping("/pay")
+    @RequestMapping(value = "/pay/{orderNo}", method = RequestMethod.GET)
     //@LoginRequired
-    public ServerResponse pay(Long orderNo, HttpServletRequest request, HttpSession session) {
+    public ServerResponse pay(@PathVariable("orderNo") Long orderNo, HttpServletRequest request) {
         String path = request.getSession().getServletContext().getRealPath("upload");
-        Integer userId = (Integer) session.getAttribute("toke");
-        return orderService.pay(1, orderNo, path);
+        Integer userId = request.getIntHeader("token");
+        return orderService.pay(userId, orderNo, path);
     }
 
 
@@ -75,10 +74,10 @@ public class OrderController {
         return Const.AlipayCallback.RESPONSE_FAILED;
     }
 
-    @RequestMapping("/queryOrderPayStatus")
+    @RequestMapping(value = "/queryOrderPayStatus/{orderNo}", method = RequestMethod.GET)
     @LoginRequired
-    public ServerResponse queryOrderPayStatus(Long orderNo, HttpSession session) {
-        Integer userId = (Integer) session.getAttribute("toke");
+    public ServerResponse queryOrderPayStatus(@PathVariable("orderNo") Long orderNo, HttpServletRequest request) {
+        Integer userId = request.getIntHeader("token");
         ServerResponse response = orderService.queryOrderPayStatus(userId, orderNo);
         if (response.isSuccess()) {
             return ServerResponse.createBySuccess(true);
@@ -86,32 +85,32 @@ public class OrderController {
         return ServerResponse.createBySuccess(false);
     }
 
-    @RequestMapping("/creatOrder")
+    @RequestMapping(value = "/creatOrder/{shipId}", method = RequestMethod.GET)
     @LoginRequired
-    public ServerResponse creatOrder(HttpSession session, Integer shipId) {
-        Integer userId = (Integer) session.getAttribute("toke");
+    public ServerResponse creatOrder(HttpServletRequest request,@PathVariable("shipId") Integer shipId) {
+        Integer userId = request.getIntHeader("token");
         return orderService.creatOrder(userId, shipId);
     }
 
-    @RequestMapping(value = "/cancelOrder", method = RequestMethod.GET)
+    @RequestMapping(value = "/cancelOrder/{orderNo}", method = RequestMethod.GET)
     @LoginRequired
-    public ServerResponse cancelOrder(HttpSession session, @RequestParam(value = "orderNo") Long orderNo) {
-        Integer userId = (Integer) session.getAttribute("toke");
+    public ServerResponse cancelOrder(HttpServletRequest request, @PathVariable(value = "orderNo") Long orderNo) {
+        Integer userId = request.getIntHeader("token");
         return orderService.cancel(userId, orderNo);
     }
 
     @RequestMapping(value = "/getOrderList", method = RequestMethod.GET)
     @LoginRequired
-    public ServerResponse getOrderList(HttpSession session, @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+    public ServerResponse getOrderList(HttpServletRequest request, @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        Integer userId = (Integer) session.getAttribute("toke");
+        Integer userId = request.getIntHeader("token");
         return orderService.getOrderList(userId, pageNum, pageSize);
     }
 
-    @RequestMapping(value = "/getOrderDetail", method = RequestMethod.GET)
+    @RequestMapping(value = "/getOrderDetail/{orderNo}", method = RequestMethod.GET)
     @LoginRequired
-    public ServerResponse getOrderDetail(HttpSession session, @RequestParam(value = "orderNo") Long orderNo) {
-        Integer userId = (Integer) session.getAttribute("toke");
+    public ServerResponse getOrderDetail(HttpServletRequest request, @PathVariable(value = "orderNo") Long orderNo) {
+        Integer userId = request.getIntHeader("token");
         return orderService.getOrderDetail(userId, orderNo);
     }
 
@@ -119,9 +118,10 @@ public class OrderController {
     @AdminLoginRequired
     public ServerResponse manageOrderList(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                                           @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
+                                          @RequestParam(value = "orderNo", required = false) Long orderNo,
                                           @RequestParam(value = "startTime", required = false) String startTime,
                                           @RequestParam(value = "endTime", required = false) String endTime) {
-        return orderService.manageOrderList(pageNum, pageSize);
+        return orderService.manageOrderList(pageNum, pageSize, orderNo, startTime, endTime);
 
     }
 

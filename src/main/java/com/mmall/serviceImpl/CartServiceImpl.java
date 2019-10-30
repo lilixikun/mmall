@@ -7,6 +7,7 @@ import com.mmall.common.ServerResponse;
 import com.mmall.dto.CartDTO;
 import com.mmall.dto.CartProductDTO;
 import com.mmall.entity.Cart;
+import com.mmall.entity.OrderItem;
 import com.mmall.entity.Product;
 import com.mmall.exceptionHandle.MmallException;
 import com.mmall.mapper.CartMapper;
@@ -17,12 +18,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -48,6 +48,24 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public ServerResponse selectCheckCarts(Integer userId) {
+        List<Cart> cartList = cartMapper.selectCheckedCartByUserId(userId);
+        ServerResponse response = this.getOrderItem(userId, cartList);
+        if (response.isSuccess()) {
+            List<OrderItem> orderItemList = (List<OrderItem>) response.getData();
+            BigDecimal payment = new BigDecimal("0");
+            for (OrderItem orderItem : orderItemList) {
+                payment = BigDecimalUtil.add(payment.doubleValue(), orderItem.getTotalPrice().doubleValue());
+            }
+            Map map = new HashMap();
+            map.put("list", orderItemList);
+            map.put("payment", payment);
+            return ServerResponse.createBySuccess(map);
+        }
+        return response;
+    }
+
+    @Override
     public ServerResponse addCart(Integer userId, Integer count, Integer productId) throws MmallException {
         if (count == null || productId == null) {
             throw new MmallException(ResponseCode.FORM_ERR);
@@ -70,7 +88,7 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public ServerResponse updateCart(Integer userId, Integer count,Integer productId) {
+    public ServerResponse updateCart(Integer userId, Integer count, Integer productId) {
         if (count == null || productId == null) {
             throw new MmallException(ResponseCode.FORM_ERR);
         }
@@ -93,10 +111,10 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public ServerResponse selectOrUnSelect(Integer userId, Integer productId, Integer checked) {
-        int result= cartMapper.checkedOrUncheckedProduct(userId, productId, checked);
-        if (result>0){
+        int result = cartMapper.checkedOrUncheckedProduct(userId, productId, checked);
+        if (result > 0) {
             return ServerResponse.createBySuccess();
-        }else {
+        } else {
             return ServerResponse.createBySuccessMessage("操作失败");
         }
     }
@@ -119,15 +137,15 @@ public class CartServiceImpl implements CartService {
         List<CartProductDTO> cartProductDTOList = new ArrayList<>();
         BigDecimal cartTotalPrice = new BigDecimal(0);
 
-        for (Cart cartItem:cartList){
-            CartProductDTO cartProductDTO=new CartProductDTO();
+        for (Cart cartItem : cartList) {
+            CartProductDTO cartProductDTO = new CartProductDTO();
             cartProductDTO.setProductId(cartItem.getProductId());
             cartProductDTO.setId(cartItem.getId());
             cartProductDTO.setUserId(userId);
 
             //查询产品信息
-            Product product=productMapper.selectByPrimaryKey(cartItem.getProductId());
-            if (product!=null){
+            Product product = productMapper.selectByPrimaryKey(cartItem.getProductId());
+            if (product != null) {
                 //BeanUtils.copyProperties(cartProductDTO,product);  字段名不同
                 cartProductDTO.setProductMainImage(product.getMainImage());
                 cartProductDTO.setProductPrice(product.getPrice());
@@ -137,28 +155,28 @@ public class CartServiceImpl implements CartService {
                 cartProductDTO.setProductStock(product.getStock());
                 //判断库存
                 int buyLimitCount = 0;
-                if (product.getStock()>=cartItem.getQuantity()){
+                if (product.getStock() >= cartItem.getQuantity()) {
                     //库存充足
-                    buyLimitCount=cartItem.getQuantity();
-                }else {
+                    buyLimitCount = cartItem.getQuantity();
+                } else {
                     //库存不足
-                    buyLimitCount=product.getStock();
+                    buyLimitCount = product.getStock();
                     //更新购物车库存
-                    Cart cart=new Cart();
+                    Cart cart = new Cart();
                     cart.setUserId(cartItem.getId());
                     cart.setQuantity(buyLimitCount);
                     cartMapper.updateByPrimaryKeySelective(cart);
                 }
                 cartProductDTO.setQuantity(buyLimitCount);
                 //计算同类商品价格
-                BigDecimal cartTotal=BigDecimalUtil.mul(cartItem.getQuantity(),product.getPrice().doubleValue());
+                BigDecimal cartTotal = BigDecimalUtil.mul(cartItem.getQuantity(), product.getPrice().doubleValue());
                 cartProductDTO.setProductTotalPrice(cartTotal);
                 cartProductDTO.setProductChecked(cartItem.getChecked());
             }
 
-            if (cartItem.getChecked()==Const.Cart.CHECKED){
+            if (cartItem.getChecked() == Const.Cart.CHECKED) {
                 //如果商品是勾选 计算总价
-                cartTotalPrice=BigDecimalUtil.add(cartTotalPrice.doubleValue(),cartProductDTO.getProductTotalPrice().doubleValue());
+                cartTotalPrice = BigDecimalUtil.add(cartTotalPrice.doubleValue(), cartProductDTO.getProductTotalPrice().doubleValue());
             }
             cartProductDTOList.add(cartProductDTO);
         }
@@ -170,8 +188,36 @@ public class CartServiceImpl implements CartService {
         return cartDTO;
     }
 
-    private boolean getAllCheckedStatus(Integer userId){
+    private boolean getAllCheckedStatus(Integer userId) {
 
-        return cartMapper.selectCartProductCheckedStatusByUserId(userId)==0;
+        return cartMapper.selectCartProductCheckedStatusByUserId(userId) == 0;
+    }
+
+    //拼接orderItem
+    private ServerResponse<List<OrderItem>> getOrderItem(Integer userId, List<Cart> cartList) {
+        if (CollectionUtils.isEmpty(cartList)) {
+            return ServerResponse.createByErrorMessage("购物车为空");
+        }
+        List<OrderItem> orderItemList = new ArrayList<>();
+        for (Cart cart : cartList) {
+            OrderItem orderItem = new OrderItem();
+            Product product = productMapper.selectByPrimaryKey(cart.getProductId());
+            if (Const.ProductStatusEnum.ON_SALE.getCode() != product.getStatus()) {
+                return ServerResponse.createByErrorMessage("不是在线售卖状态");
+            }
+            //校验库存
+            if (cart.getQuantity() > product.getStock()) {
+                return ServerResponse.createByErrorMessage("产品" + product.getName() + "库存不足");
+            }
+            orderItem.setUserId(userId);
+            orderItem.setProductId(product.getId());
+            orderItem.setProductName(product.getName());
+            orderItem.setProductImage(product.getMainImage());
+            orderItem.setCurrentUnitPrice(product.getPrice());
+            orderItem.setQuantity(cart.getQuantity());
+            orderItem.setTotalPrice(BigDecimalUtil.mul(product.getPrice().doubleValue(), cart.getQuantity()));
+            orderItemList.add(orderItem);
+        }
+        return ServerResponse.createBySuccess(orderItemList);
     }
 }

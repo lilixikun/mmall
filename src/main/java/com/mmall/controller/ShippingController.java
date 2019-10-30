@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.Serializable;
@@ -26,18 +27,18 @@ public class ShippingController {
 
     @GetMapping("/list")
     @LoginRequired
-    public ServerResponse list(HttpSession session) {
-        Integer userId = (Integer) session.getAttribute("token");
+    public ServerResponse list(HttpServletRequest request) {
+        Integer userId = request.getIntHeader("token");
         return shippingService.list(userId);
     }
 
     @PostMapping("/shipSave")
     @LoginRequired
-    public ServerResponse shipSave(@RequestBody @Valid ShippingDTO shipping, BindingResult bindingResult, HttpSession session) throws MmallException {
+    public ServerResponse shipSave(@RequestBody @Valid ShippingDTO shipping, BindingResult bindingResult, HttpServletRequest request) throws MmallException {
         if (bindingResult.hasErrors()) {
             throw new MmallException(ResponseCode.FORM_ERR.getCode(), bindingResult.getFieldError().getDefaultMessage());
         }
-        Integer userId = (Integer) session.getAttribute("token");
+        Integer userId = request.getIntHeader("token");
         return shippingService.shipSave(userId, shipping);
     }
 
@@ -48,8 +49,8 @@ public class ShippingController {
 
 
     @GetMapping("/settingDef/{id}")
-    public Serializable settingDef(@PathVariable("id") Integer id, HttpSession session) {
-        Integer userId = (Integer) session.getAttribute("token");
+    public Serializable settingDef(@PathVariable("id") Integer id, HttpServletRequest request) {
+        Integer userId = request.getIntHeader("token");
         return shippingService.settingDef(id, userId);
     }
 

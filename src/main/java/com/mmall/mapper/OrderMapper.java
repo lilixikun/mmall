@@ -14,13 +14,15 @@ public interface OrderMapper {
 
     Order selectByPrimaryKey(Integer id);
 
-    List<Order> selectAllOrder();
+    List<Order> selectAllOrder(@Param("orderNo")Long orderNo, @Param("startTime") String startTime,@Param("endTime") String endTime);
 
     int updateByPrimaryKeySelective(Order record);
 
     int updateByPrimaryKey(Order record);
 
     Order selectByUserIdAndOrderNo(@Param("userId") Integer userId,@Param("orderNo") Long orderNo);
+
+    List<Order> selectByUserId(Integer userId);
 
     Order selectByOrderNo(String orderNo);
 }

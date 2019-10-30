@@ -297,6 +297,7 @@ public class OrderServiceImpl implements OrderService {
         order.setPostage(0);
         order.setPayment(payment);
         order.setPaymentType(Const.PaymentTypeEnum.ONLINE_PAY.getCode());
+        //设置地址
         order.setShippingId(shipId);
 
         int result = orderMapper.insertSelective(order);
@@ -318,12 +319,11 @@ public class OrderServiceImpl implements OrderService {
             for (Cart cart : cartList) {
                 cartMapper.deleteByPrimaryKey(cart.getId());
             }
-            return ServerResponse.createBySuccess();
+            return ServerResponse.createBySuccess(orderNo);
 
         } else {
             return ServerResponse.createBySuccessMessage("生成订单失败");
         }
-
     }
 
 
@@ -347,8 +347,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ServerResponse getOrderList(Integer userIn, int pageNum, int pageSize) {
-        return null;
+    public ServerResponse getOrderList(Integer userId, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Order> orderList = orderMapper.selectByUserId(userId);
+
+        List<OrderDTO> orderDTOList = getOrderVoList(orderList, userId);
+
+        PageInfo<OrderDTO> orderPageInfo = new PageInfo<>(orderDTOList, pageSize);
+
+        return ServerResponse.createBySuccess(orderPageInfo);
     }
 
     @Override
@@ -364,9 +371,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ServerResponse manageOrderList(int pageNum, int pageSize) {
+    public ServerResponse manageOrderList(int pageNum, int pageSize, Long orderNo, String startTime, String endTime) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Order> orderList = orderMapper.selectAllOrder();
+        List<Order> orderList = orderMapper.selectAllOrder(orderNo, startTime, endTime);
         PageInfo<Order> orderPageInfo = new PageInfo<>(orderList, pageSize);
         return ServerResponse.createBySuccess(orderPageInfo);
     }
@@ -450,6 +457,7 @@ public class OrderServiceImpl implements OrderService {
         orderVo.setStatusDesc(Const.OrderStatusEnum.codeOf(order.getStatus()).getValue());
 
         orderVo.setShippingId(order.getShippingId());
+        //查询地址详情
         Shipping shipping = shippingMapper.selectByPrimaryKey(order.getShippingId());
         if (shipping != null) {
             orderVo.setReceiverName(shipping.getReceiverName());
@@ -485,5 +493,18 @@ public class OrderServiceImpl implements OrderService {
         }
         orderVo.setOrderItemDTOList(orderItemVoList);
         return orderVo;
+    }
+
+    private List<OrderDTO> getOrderVoList(List<Order> orderList, Integer userId) {
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+
+        for (Order order : orderList) {
+            //根据订单查询 订单详情
+            List<OrderItem> orderItemList = orderItemMapper.getByOrderNoUserId(order.getOrderNo(), userId);
+            //拼接orderDTO
+            OrderDTO orderDTO = getOrderDTO(order, orderItemList);
+            orderDTOList.add(orderDTO);
+        }
+        return orderDTOList;
     }
 }

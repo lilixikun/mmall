@@ -33,6 +33,15 @@
         select
         <include refid="Base_Column_List"/>
         from mmall_order
+        where 1=1
+        <if test="orderNo!=null">
+            AND order_no=#{orderNo}
+        </if>
+        <if test="startTime != null and endTime != null">
+            AND create_time <![CDATA[>=]]> #{startTime}
+            AND close_time <![CDATA[<=]]> #{endTime}
+        </if>
+        ORDER BY create_time DESC
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -90,12 +99,8 @@
             <if test="closeTime != null">
                 close_time,
             </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
-            <if test="updateTime != null">
-                update_time,
-            </if>
+            create_time,
+            update_time,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -134,12 +139,8 @@
             <if test="closeTime != null">
                 #{closeTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
-            </if>
+            now(),
+            now()
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.mmall.entity.Order">
@@ -207,10 +208,19 @@
         select
         <include refid="Base_Column_List"/>
         from mmall_order
-        where order_no=#{orderNo}
+        where
+        <if test="orderNo!=null">
+            order_no=#{orderNo}
+        </if>
         <if test="userId!=null">
             and user_id=#{userId}
         </if>
+    </select>
+
+    <select id="selectByUserId" parameterType="integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_order where user_id=#{userId} ORDER BY create_time DESC
     </select>
 
     <select id="selectByOrderNo" resultMap="BaseResultMap" parameterType="String">
