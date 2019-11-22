@@ -24,20 +24,16 @@ public class UserManagerController {
     private RedisUtil redisUtil;
 
     @GetMapping("/login")
-    public ServerResponse login(@RequestParam("userName") String userName, @RequestParam("password") String password, HttpSession session, HttpServletResponse servletResponse) {
+    public ServerResponse login(@RequestParam("userName") String userName, @RequestParam("password") String password, HttpServletResponse servletResponse) {
         ServerResponse<User> response = userService.login(userName, password);
         if (response.isSuccess()) {
             User user = response.getData();
             if (user.getRole() == Const.Role.ROLE_ADMIN) {
-                //登录成功把userId写入session
-                session.setAttribute("token", user.getId());
-                //设置永不过期
-                session.setMaxInactiveInterval(-1);
-                String token = UUID.randomUUID().toString();
+                Integer userId = response.getData().getId();
                 //存入缓存redis
-                servletResponse.addHeader("token", token);
-                redisUtil.set(token, JSONObject.toJSONString(response.getData()), 7 * 60 * 60 * 60);
-                return ServerResponse.createBySuccess(token);
+                servletResponse.addIntHeader("token", userId);
+                redisUtil.set(userId.toString(), JSONObject.toJSONString(response.getData()), 7 * 60 * 60 * 60);
+                return ServerResponse.createBySuccess(userId);
             } else {
                 return ServerResponse.createByErrorMessage("当前不是管理员");
             }

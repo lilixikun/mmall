@@ -425,7 +425,7 @@ public class OrderServiceImpl implements OrderService {
             OrderItem orderItem = new OrderItem();
             Product product = productMapper.selectByPrimaryKey(cart.getProductId());
             if (Const.ProductStatusEnum.ON_SALE.getCode() != product.getStatus()) {
-                return ServerResponse.createByErrorMessage("不是在线售卖状态");
+                return ServerResponse.createByErrorMessage(product.getName()+"不是在线售卖状态");
             }
             //校验库存
             if (cart.getQuantity() > product.getStock()) {

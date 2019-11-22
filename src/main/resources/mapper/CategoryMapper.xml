@@ -21,7 +21,7 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <select id="selectAllCategory" resultType="map">
+    <select id="selectAllCategory" resultMap="BaseResultMap">
     select id ,name
     from mmall_category
   </select>

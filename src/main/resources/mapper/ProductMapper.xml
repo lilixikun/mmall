@@ -31,14 +31,17 @@
         from mmall_product
         <where>
 
-            <if test="categoryId!=null">
+            <if test="categoryId!=null and categoryId!=''">
                 category_id = #{categoryId}
             </if>
-            <if test="productName!=null">
+            <if test="productName!=null and productName!=''">
                 and `name` like "%"#{productName}"%"
             </if>
-            <if test="productId!=null">
+            <if test="productId!=null and productId!=''">
                 and id=#{productId}
+            </if>
+            <if test="status!=null">
+                and status=#{status}
             </if>
         </where>
         order by id asc
@@ -128,8 +131,8 @@
             <if test="status != null">
                 #{status,jdbcType=INTEGER},
             </if>
-           now(),
-          now()
+            now(),
+            now()
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.mmall.entity.Product">

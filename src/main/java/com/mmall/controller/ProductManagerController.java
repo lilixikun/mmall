@@ -50,8 +50,9 @@ public class ProductManagerController {
                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
                                   @RequestParam(value = "categoryId", required = false) Integer categoryId,
                                   @RequestParam(value = "productName", required = false) String productName,
+                                  @RequestParam(value = "status", required = false) Integer status,
                                   @RequestParam(value = "productId", required = false) Integer productId) {
 
-        return productService.getList(pageNum, pageSize, categoryId, productName, productId);
+        return productService.getList(pageNum, pageSize, categoryId, productName, productId,status);
     }
 }

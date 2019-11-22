@@ -33,7 +33,7 @@ public class UploadServiceImpl implements UploadService {
         if (response.isSuccess()){
             //上传成功把地址存入数据库
             Media media =new Media();
-            media.setPath(response.getMsg());
+            media.setPath((String) response.getData());
             mediaMapper.insertSelective(media);
             HashMap data=new HashMap();
             data.put("url",ftpConfig.getImageBaseUrl()+media.getPath());
@@ -46,12 +46,13 @@ public class UploadServiceImpl implements UploadService {
 
     @Override
     public ServerResponse deletePic(String path){
+        String path1=path.substring(path.lastIndexOf("/")+1);
         //删除ftp上的图片
-        ServerResponse result=ftpUtil.delFtp(path.substring(path.lastIndexOf('/')));
+        ServerResponse result=ftpUtil.delFtp(path1);
 
         if (result.isSuccess()){
             //删除多媒体表中的记录
-           int count= mediaMapper.deleteByPath(path);
+           int count= mediaMapper.deleteByPath(path1);
            if (count>0){
                return ServerResponse.createBySuccess();
            }

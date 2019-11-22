@@ -50,37 +50,35 @@ public class LogAspect {
         HttpServletRequest request = attributes.getRequest();
 
         //URL：根据请求对象拿到访问的地址
-        logger.info("url=" + request.getRequestURL());
+        //logger.info("url=" + request.getRequestURL());
         //获取请求的方法，是Get还是Post请求
-        logger.info("method=" + request.getMethod());
+        //logger.info("method=" + request.getMethod());
         //ip：获取到访问
-        logger.info("ip=" + request.getRemoteAddr());
+        //logger.info("ip=" + request.getRemoteAddr());
         //获取被拦截的类名和方法名
-        logger.info("class=" + joinPoint.getSignature().getDeclaringTypeName() +
-                "and method name=" + joinPoint.getSignature().getName());
+        //logger.info("class=" + joinPoint.getSignature().getDeclaringTypeName() +"and method name=" + joinPoint.getSignature().getName());
         //参数
-        logger.info("参数=" + joinPoint.getArgs().toString());
+        //logger.info("参数=" + joinPoint.getArgs().toString());
 
     }
 
     @AfterReturning(returning = "object", pointcut = "loginRequired()")
     public void doAfterReturning(Object object) {
 
-        System.out.println("方法的返回值 : " + object);
+        logger.info("方法的返回值 : " + object);
     }
 
     // 方法发生异常时执行该方法
     @AfterThrowing(throwing = "e", pointcut = "loginRequired()")
     public void throwsExecute(JoinPoint joinPoint, Exception e) {
 
-        System.err.println("方法执行异常 : " + e.getMessage());
+        //System.err.println("方法执行异常 : " + e.getMessage());
     }
 
     // 后置通知
     @After("loginRequired()")
     public void afterInform() {
-
-        System.out.println("后置通知结束");
+        logger.info("后置通知结束");
     }
 
     /**
@@ -107,7 +105,7 @@ public class LogAspect {
 
             if (loginResult == false) {
                 return ServerResponse.createByErrorCodeMessage(100, "用户未登录");
-            }else {
+            } else {
                 if ((Integer) isLogin(request).get("role") == 0 && adminIsLoginRequired(method) == true) {
                     return ServerResponse.createByErrorCodeMessage(100, "当前用户不是管理员");
                 }

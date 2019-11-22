@@ -79,8 +79,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ServerResponse getList(Integer pageNum, Integer pageSize,Integer categoryId, String productName,Integer productId) {
-        List<Product> productList=productMapper.selectProducts(categoryId,productName,productId);
+    public ServerResponse getList(Integer pageNum, Integer pageSize,Integer categoryId, String productName,Integer productId,Integer status) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Product> productList=productMapper.selectProducts(categoryId,productName,productId,status);
         List<ProductDTO> productDTOList=new ArrayList<>();
         for (Product product:productList){
             ProductDTO productDTO=new ProductDTO();
@@ -89,7 +90,6 @@ public class ProductServiceImpl implements ProductService {
             productDTO.setUpdateTime(DateTimeUtil.formatDatetime(product.getUpdateTime(),"yyyy-MM-dd HH:mm"));
             productDTOList.add(productDTO);
         }
-        PageHelper.startPage(pageNum, pageSize);
         PageInfo<Product> productPageInfo=new PageInfo<>(productList,pageSize);
         return ServerResponse.createBySuccess(productPageInfo);
     }

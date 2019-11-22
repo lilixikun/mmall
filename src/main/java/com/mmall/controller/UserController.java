@@ -39,18 +39,14 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public ServerResponse login(@RequestBody User user, HttpSession session, HttpServletResponse response) {
+    public ServerResponse login(@RequestBody User user, HttpServletResponse response) {
         ServerResponse<User> serverResponse = userService.login(user.getUserName(), user.getPassword());
         //是否登录成功
         if (serverResponse.isSuccess()) {
             Integer userId = serverResponse.getData().getId();
             //UUID.randomUUID().toString();
-            //把userId存入session
-            session.setAttribute("token", userId);
-            //设置永不过期
-            session.setMaxInactiveInterval(-1);
             //存入缓存redis
-            response.addIntHeader("token",userId);
+            response.addIntHeader("token", userId);
             redisUtil.set(userId.toString(), JSONObject.toJSONString(serverResponse.getData()), 7 * 60 * 60 * 60);
 
             return ServerResponse.createBySuccess(userId);
@@ -59,8 +55,12 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public ServerResponse<String> logout(HttpSession session) {
-        session.removeAttribute(Const.CURRENT_USER);
+    public ServerResponse<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        Integer token = request.getIntHeader("token");
+        //删除redis
+        redisUtil.delete(token.toString());
+        //清除header
+        response.setHeader(token.toString(), "");
         return ServerResponse.createBySuccessMessage("登出成功");
     }
 
